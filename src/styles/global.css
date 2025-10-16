@@ -1,0 +1,41 @@
+@import "tailwindcss";
+@import "@fontsource/inria-serif/400.css";
+@import "@fontsource/inria-serif/700.css";
+
+/* Base typography */
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+body {
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+  color: #0a0a0a;
+  background: #fff;
+}
+
+/* Objectivity (self-hosted) display family */
+@font-face {
+  font-family: 'Objectivity';
+  src: url('/fonts/objectivity/Objectivity-Black.woff2') format('woff2');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+.font-display {
+  font-family: 'Objectivity', ui-sans-serif, system-ui;
+  font-weight: 900;
+}
+
+/* Vertical sticky section label */
+.sticky-side {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  position: sticky;
+  top: 2rem;
+  font-family: 'Objectivity', ui-sans-serif, system-ui;
+  font-weight: 900;
+  letter-spacing: .08em;
+}
+
+

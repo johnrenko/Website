@@ -1,0 +1,57 @@
+---
+const { name = 'JOHN DUTAMBY' } = Astro.props as { name?: string };
+---
+<section class="mb-16" style="height: 90vh;">
+  <div class="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen overflow-visible">
+    <h1 id="hero-title" class="hero-title font-display text-[18vw] md:text-[12vw] leading-none tracking-tight uppercase select-none -translate-y-[35%] whitespace-nowrap" aria-label={name}>
+      {name}
+    </h1>
+  </div>
+  <div class="flex items-center justify-center mt-6" style="height: 120px;">
+    <h2
+      class="font-serif text-center"
+      style="font-family: 'Inria Serif', serif; font-size: 80px; line-height: 1;"
+    >
+      Your next founding designer
+    </h2>
+  </div>
+</section>
+
+<style>
+  /* Animateable custom properties for radial reveal */
+  @property --x { syntax: '<length>'; initial-value: 50%; inherits: false; }
+  @property --y { syntax: '<length>'; initial-value: 50%; inherits: false; }
+  @property --r { syntax: '<length>'; initial-value: 0px; inherits: false; }
+
+  .hero-title {
+    /* Base colors and reveal gradient */
+    --accent: #ec4899; /* pink-500 */
+    /* Ensure variables have defaults even if @property is unsupported */
+    --x: 50%;
+    --y: 50%;
+    --r: 0px;
+    background-image: radial-gradient(circle at var(--x, 50%) var(--y, 50%), var(--accent) 0, var(--accent) var(--r, 0px), #000 calc(var(--r, 0px) + 1px));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    transition: --r 9000ms ease;
+  }
+  .hero-title:hover { --r: 1400px; }
+</style>
+
+<script>
+  const title = document.getElementById('hero-title');
+  if (title) {
+    const update = (ev) => {
+      const rect = title.getBoundingClientRect();
+      const x = ev.clientX - rect.left;
+      const y = ev.clientY - rect.top;
+      title.style.setProperty('--x', x + 'px');
+      title.style.setProperty('--y', y + 'px');
+    };
+    title.addEventListener('pointermove', update);
+    title.addEventListener('pointerenter', update);
+  }
+</script>
+
+

@@ -1,0 +1,14 @@
+---
+const { text = 'JOHN DUTAMBY' } = Astro.props as { text?: string };
+const chars = Array.from(text);
+---
+<h1 class="font-display text-6xl md:text-8xl tracking-tight" aria-label={text}>
+  {chars.map((c, i) => (
+    <span class="inline-block transition-transform duration-150 ease-out hover:-translate-y-0.5" style={{ transitionDelay: `${i * 8}ms` }}>
+      <span class="transition-colors hover:text-pink-500">{c}</span>
+    </span>
+  ))}
+  
+</h1>
+
+

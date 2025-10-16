@@ -1,0 +1,54 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import HeroHeader from "../components/HeroHeader.astro";
+import { getCollection } from 'astro:content';
+const works = await getCollection('work');
+const experiments = await getCollection('experiments');
+---
+<BaseLayout title="John Dutamby — Portfolio">
+  <HeroHeader name="JOHN DUTAMBY" />
+
+  <section id="work" class="mb-20">
+    <div class="flex items-end justify-between mb-6">
+      <h2 class="font-display text-3xl">Work</h2>
+      <a href="/work" class="text-sm underline">All work →</a>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {works.slice(0,3).map((w) => (
+        <a href={`/work/${w.id}`} class="group block border border-zinc-200 rounded-lg p-4 hover:border-zinc-400">
+          <h3 class="font-display text-xl group-hover:text-pink-500">{w.data.title}</h3>
+          <p class="mt-2 text-sm text-zinc-600">{w.data.summary}</p>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section id="experiments" class="mb-20">
+    <div class="flex items-end justify-between mb-6">
+      <h2 class="font-display text-3xl">Experiments</h2>
+      <a href="/experiments" class="text-sm underline">All work →</a>
+    </div>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      {experiments.slice(0,8).map((e) => (
+        <div class="aspect-square bg-zinc-100 rounded-md border border-zinc-200 flex items-center justify-center text-xs text-zinc-500">
+          {e.data.title}
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section id="cv" class="mb-24">
+    <h2 class="font-display text-3xl mb-4">Curriculum Vitae</h2>
+    <p>See my full profile <a href="/cv" class="underline">here</a>.</p>
+  </section>
+
+  <section id="contact" class="mb-24">
+    <h2 class="font-display text-3xl mb-4">Contact</h2>
+    <ul class="space-y-2">
+      <li><a href="mailto:john.dutamby@..." class="underline">Email</a></li>
+      <li><a href="https://www.linkedin.com/in/johndutamby/" class="underline" rel="noopener" target="_blank">LinkedIn</a></li>
+    </ul>
+  </section>
+</BaseLayout>
+
+
