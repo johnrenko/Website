@@ -1,5 +1,7 @@
 ---
 const { name = 'JOHN DUTAMBY' } = Astro.props as { name?: string };
+const tagline = 'Your next founding designer';
+const taglineChars = Array.from(tagline);
 ---
 <section class="mb-16" style="height: 90vh;">
   <div class="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen overflow-visible">
@@ -9,10 +11,13 @@ const { name = 'JOHN DUTAMBY' } = Astro.props as { name?: string };
   </div>
   <div class="flex items-center justify-center mt-6" style="height: 120px;">
     <h2
-      class="font-serif text-center"
+      class="font-serif text-center tagline"
       style="font-family: 'Inria Serif', serif; font-size: 80px; line-height: 1;"
+      aria-label={tagline}
     >
-      Your next founding designer
+      {taglineChars.map((c, i) => (
+        <span class="tagline-letter inline-block" data-index={i}>{c === ' ' ? '\u00A0' : c}</span>
+      ))}
     </h2>
   </div>
 </section>
@@ -37,6 +42,9 @@ const { name = 'JOHN DUTAMBY' } = Astro.props as { name?: string };
     transition: --r 9000ms ease;
   }
   .hero-title:hover { --r: 1400px; }
+  .tagline-letter { transition: transform 120ms ease; }
+  .tagline-letter:hover { transform: translateY(-2px); }
+  .tagline { white-space: nowrap; cursor: url('/images/cursor/wand.svg') 6 6, auto; }
 </style>
 
 <script>
@@ -52,6 +60,28 @@ const { name = 'JOHN DUTAMBY' } = Astro.props as { name?: string };
     title.addEventListener('pointermove', update);
     title.addEventListener('pointerenter', update);
   }
+
+  // Random Google font per-letter hover for tagline
+  const candidateFonts = [
+    'Inter',
+    'Roboto',
+    'Playfair Display',
+    'Lora',
+    'Poppins',
+    'Space Mono'
+  ];
+  const letters = document.querySelectorAll('.tagline-letter');
+  function pickRandomFont() {
+    const idx = Math.floor(Math.random() * candidateFonts.length);
+    return candidateFonts[idx];
+  }
+  letters.forEach((el) => {
+    el.addEventListener('mouseenter', () => {
+      const f = pickRandomFont();
+      const fallback = f === 'Space Mono' ? 'monospace' : 'serif';
+      el.style.fontFamily = `'${f}', ${fallback}`;
+    });
+  });
 </script>
 
 
