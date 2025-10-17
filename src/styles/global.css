@@ -38,4 +38,77 @@ body {
   letter-spacing: .08em;
 }
 
+/* WIP Banner */
+.wip-banner {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: repeating-linear-gradient(
+    45deg,
+    #111 0 12px,
+    #f5c518 12px 24px
+  );
+  color: #111;
+  border-bottom: 2px solid #111;
+  box-shadow: 0 2px 0 rgba(0,0,0,0.2);
+}
+.wip-banner__inner {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0 auto;
+  max-width: 90rem;
+  width: 100%;
+}
+.wip-banner__icon {
+  width: 24px;
+  height: 24px;
+  display: inline-block;
+  background: #111;
+  clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0 38%);
+}
+.wip-banner__text {
+  font-family: 'Objectivity', ui-sans-serif, system-ui;
+  font-weight: 900;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: #111;
+  background: #f5c518;
+  padding: 0.25rem 0.5rem;
+}
+.wip-banner__sub {
+  font-size: 0.95rem;
+  color: #111;
+  background: rgba(255,255,255,0.85);
+  padding: 0.2rem 0.5rem;
+  border-radius: 0.25rem;
+}
+.wip-banner__close {
+  margin-left: auto;
+  background: #111;
+  color: #f5c518;
+  border: none;
+  padding: 0.35rem 0.6rem;
+  border-radius: 0.25rem;
+  cursor: pointer;
+}
+.wip-banner__close:focus {
+  outline: 2px solid #111;
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .wip-banner {
+    animation: slideDown 300ms ease-out;
+  }
+}
+@keyframes slideDown {
+  from { transform: translateY(-100%); }
+  to { transform: translateY(0); }
+}
+
 
