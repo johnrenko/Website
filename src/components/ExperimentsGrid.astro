@@ -1,0 +1,142 @@
+---
+import { readdir } from 'node:fs/promises';
+
+const { limit } = Astro.props as { limit?: number };
+
+const experimentsDir = new URL('../../public/images/experiments/', import.meta.url);
+let mediaPaths: string[] = [];
+function getFitModeFromPath(path: string): 'fit' | 'fill' {
+  const name = (path.split('/').pop() || '').toLowerCase();
+  if (/(^|[-_.])fill([-.]|$)/.test(name)) return 'fill';
+  if (/(^|[-_.])fit([-.]|$)/.test(name)) return 'fit';
+  return 'fit';
+}
+function getObjectFitClass(path: string): string {
+  return getFitModeFromPath(path) === 'fill' ? 'object-cover' : 'object-contain';
+}
+try {
+  const fileNames = await readdir(experimentsDir);
+  mediaPaths = fileNames
+    .filter((name) => /(png|jpe?g|gif|webp|avif|svg|mp4)$/i.test(name.split('.').pop() || ''))
+    .map((name) => `/images/experiments/${name}`)
+    .sort((a, b) => a.localeCompare(b));
+  if (typeof limit === 'number') {
+    mediaPaths = mediaPaths.slice(0, limit);
+  }
+} catch {
+  mediaPaths = [];
+}
+---
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+  {mediaPaths.map((src) => {
+    const fitClass = getObjectFitClass(src);
+    return (
+      <button type="button" class="relative aspect-square overflow-hidden rounded-md border border-zinc-200 bg-zinc-100 group focus:outline-none focus:ring-2 focus:ring-zinc-400 cursor-pointer" data-media-src={src} aria-label="Open media">
+        {src.toLowerCase().endsWith('.mp4') ? (
+          <video src={src} muted playsinline loop autoplay preload="metadata" class={`absolute inset-0 h-full w-full ${fitClass}`}></video>
+        ) : (
+          <img src={src} alt="" loading="lazy" decoding="async" class={`absolute inset-0 h-full w-full ${fitClass} group-hover:opacity-95 transition-opacity bg-[#000000]`} />
+        )}
+        <span class="pointer-events-none absolute inset-0 ring-0 group-hover:ring-2 group-hover:ring-zinc-300/60"></span>
+      </button>
+    );
+  })}
+</div>
+
+<!-- Lightbox overlay -->
+<div class="hidden fixed inset-0 z-50 bg-black/90 p-4 md:p-8 flex items-center justify-center" data-lightbox aria-hidden="true">
+  <button type="button" class="absolute top-4 right-4 md:top-6 md:right-6 text-white/90 hover:text-white text-xl" data-lightbox-close aria-label="Close">
+    ×
+  </button>
+  <div class="max-w-[95vw] max-h-[95vh] w-full h-full flex items-center justify-center" data-lightbox-viewport>
+    <div data-lightbox-media></div>
+  </div>
+  <span class="sr-only">Press Escape to close</span>
+  <script type="module">
+    (() => {
+      const root = document.currentScript && document.currentScript.closest('[data-lightbox]')?.parentElement || document;
+      const grid = root.querySelector('[data-lightbox]')?.previousElementSibling || document;
+      const overlay = root.querySelector('[data-lightbox]');
+      if (!overlay) return;
+      const mediaContainer = overlay.querySelector('[data-lightbox-media]');
+      const closeBtn = overlay.querySelector('[data-lightbox-close]');
+
+      function isVideo(src) {
+        return /\.mp4$/i.test(src);
+      }
+
+      function getFitModeFromPath(path) {
+        const name = (path.split('/').pop() || '').toLowerCase();
+        if (/(^|[-_.])fill([-.]|$)/.test(name)) return 'fill';
+        if (/(^|[-_.])fit([-.]|$)/.test(name)) return 'fit';
+        return 'fit';
+      }
+
+      function openLightbox(src) {
+        if (!mediaContainer) return;
+        mediaContainer.innerHTML = '';
+        const fitClass = getFitModeFromPath(src) === 'fill' ? 'object-cover' : 'object-contain';
+        if (isVideo(src)) {
+          const video = document.createElement('video');
+          video.src = src;
+          video.controls = true;
+          video.autoplay = true;
+          video.playsInline = true;
+          video.className = `max-h-[90vh] max-w-[90vw] ${fitClass}`;
+          mediaContainer.appendChild(video);
+        } else {
+          const img = document.createElement('img');
+          img.src = src;
+          img.alt = '';
+          img.loading = 'eager';
+          img.decoding = 'sync';
+          img.className = `max-h-[90vh] max-w-[90vw] ${fitClass}`;
+          mediaContainer.appendChild(img);
+        }
+        overlay.classList.remove('hidden');
+        overlay.setAttribute('aria-hidden', 'false');
+        const prevOverflow = document.body.style.overflow;
+        document.body.dataset.prevOverflow = prevOverflow;
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeLightbox() {
+        overlay.classList.add('hidden');
+        overlay.setAttribute('aria-hidden', 'true');
+        if (mediaContainer) mediaContainer.innerHTML = '';
+        const prevOverflow = document.body.dataset.prevOverflow || '';
+        document.body.style.overflow = prevOverflow;
+      }
+
+      document.addEventListener('click', (e) => {
+        const target = e.target;
+        if (!(target instanceof Element)) return;
+        const trigger = target.closest('[data-media-src]');
+        if (trigger) {
+          const src = trigger.getAttribute('data-media-src');
+          if (src) {
+            e.preventDefault();
+            openLightbox(src);
+          }
+          return;
+        }
+        if (target.closest('[data-lightbox-close]')) {
+          e.preventDefault();
+          closeLightbox();
+          return;
+        }
+        if (overlay && !target.closest('[data-lightbox-viewport]') && !target.closest('[data-media-src]') && !overlay.classList.contains('hidden')) {
+          closeLightbox();
+        }
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && !overlay.classList.contains('hidden')) {
+          closeLightbox();
+        }
+      });
+    })();
+  </script>
+</div>
+
+

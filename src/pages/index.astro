@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import HeroHeader from "../components/HeroHeader.astro";
+import ExperimentsGrid from "../components/ExperimentsGrid.astro";
 import { getCollection } from 'astro:content';
 import WorkCard from "../components/WorkCard.astro";
 const works = await getCollection('work');
@@ -15,7 +16,7 @@ const sortedWorks = works
   });
 const experiments = await getCollection('experiments');
 ---
-<BaseLayout title="John Dutamby — Portfolio">
+<BaseLayout title="John Dutamby — Portfolio" >
   <HeroHeader name="JOHN DUTAMBY" />
 
   <section id="work" class="mb-20">
@@ -40,15 +41,9 @@ const experiments = await getCollection('experiments');
   <section id="experiments" class="mb-20">
     <div class="flex items-end justify-between mb-6">
       <h2 class="font-display text-3xl">Experiments</h2>
-      <a href="/experiments" class="text-sm underline">All work →</a>
+      <a href="/experiments" class="text-sm underline">All experiments →</a>
     </div>
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-      {experiments.slice(0,8).map((e) => (
-        <div class="aspect-square bg-zinc-100 rounded-md border border-zinc-200 flex items-center justify-center text-xs text-zinc-500">
-          {e.data.title}
-        </div>
-      ))}
-    </div>
+    <ExperimentsGrid limit={8} />
   </section>
 
   <section id="cv" class="mb-24">

@@ -1,17 +1,10 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { getCollection } from 'astro:content';
-const experiments = await getCollection('experiments');
+import ExperimentsGrid from '../components/ExperimentsGrid.astro';
 ---
 <BaseLayout title="Experiments — John Dutamby">
   <h1 class="font-display text-4xl mb-8">Experiments</h1>
-  <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-    {experiments.map((e) => (
-      <div class="aspect-square bg-zinc-100 rounded-md border border-zinc-200 flex items-center justify-center text-xs text-zinc-500">
-        {e.data.title}
-      </div>
-    ))}
-  </div>
+  <ExperimentsGrid />
 </BaseLayout>
 
 
