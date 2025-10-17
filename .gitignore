@@ -20,3 +20,4 @@ node_modules
 .astro/cache.json.gz.br.gz.br.gz.br.gz.br.gz.br.gz.br.gz.br.gz
 .astro/cache.json.gz.br.gz.br.gz.br.gz.br.gz.br.gz.br.gz.br.gz.br
 .astro/cache.json.gz.br.gz.br.gz.br.gz.br.gz.br.gz.br.gz.br.gz.br.gz
+.DS_Store
