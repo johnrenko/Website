@@ -2,7 +2,17 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import HeroHeader from "../components/HeroHeader.astro";
 import { getCollection } from 'astro:content';
+import WorkCard from "../components/WorkCard.astro";
 const works = await getCollection('work');
+const sortedWorks = works
+  .slice()
+  .sort((a, b) => {
+    const orderA = typeof a.data.order === 'number' ? a.data.order : Number.POSITIVE_INFINITY;
+    const orderB = typeof b.data.order === 'number' ? b.data.order : Number.POSITIVE_INFINITY;
+    if (orderA !== orderB) return orderA - orderB; // lower order first
+    // Fallback: most recent date first (date is YYYY-MM)
+    return (b.data.date || '').localeCompare(a.data.date || '');
+  });
 const experiments = await getCollection('experiments');
 ---
 <BaseLayout title="John Dutamby — Portfolio">
@@ -14,11 +24,15 @@ const experiments = await getCollection('experiments');
       <a href="/work" class="text-sm underline">All work →</a>
     </div>
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      {works.slice(0,3).map((w) => (
-        <a href={`/work/${w.id}`} class="group block border border-zinc-200 rounded-lg p-4 hover:border-zinc-400">
-          <h3 class="font-display text-xl group-hover:text-pink-500">{w.data.title}</h3>
-          <p class="mt-2 text-sm text-zinc-600">{w.data.summary}</p>
-        </a>
+      {sortedWorks.slice(0,3).map((w) => (
+        <WorkCard
+          href={`/work/${w.id}`}
+          company={w.data.title.split(' — ')[0] ?? ''}
+          role={w.data.role}
+          title={w.data.summary}
+          cover={w.data.cover}
+          coverAlt={w.data.title}
+        />
       ))}
     </div>
   </section>

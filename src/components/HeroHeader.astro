@@ -3,13 +3,18 @@ const { name = 'JOHN DUTAMBY' } = Astro.props as { name?: string };
 const tagline = 'Your next founding designer';
 const taglineChars = Array.from(tagline);
 ---
-<section class="mb-16" style="height: 90vh;">
+<section class="mb-16" style="height: 70vh;">
   <div class="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen overflow-visible">
-    <h1 id="hero-title" class="hero-title font-display text-[18vw] md:text-[12vw] leading-none tracking-tight uppercase select-none -translate-y-[35%] whitespace-nowrap" aria-label={name}>
+    <h1
+      id="hero-title"
+      class="hero-title font-display text-[18vw] md:text-[12vw] leading-none tracking-tight uppercase select-none whitespace-nowrap"
+      aria-label={name}
+      style="position: absolute; top: -90px; left: -30px;"
+    >
       {name}
     </h1>
   </div>
-  <div class="flex items-center justify-center mt-6" style="height: 120px;">
+  <div class="flex items-center justify-center mt-6" style="height: 100%;">
     <h2
       class="font-serif text-center tagline"
       style="font-family: 'Ovo', serif; font-size: 80px; line-height: 1;"
@@ -39,10 +44,10 @@ const taglineChars = Array.from(tagline);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
-    transition: --r 9000ms ease;
+    transition: --r 9000ms ease-in-out;
   }
   .hero-title:hover { --r: 1400px; }
-  .tagline-letter { transition: transform 120ms ease; }
+  .tagline-letter { transition: transform 120ms ease-in-out; }
   .tagline-letter:hover { transform: translateY(-2px); }
   .tagline { white-space: nowrap; cursor: url('/images/cursor/wand.svg') 6 6, auto; }
 </style>
