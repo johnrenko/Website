@@ -3,13 +3,13 @@ const { name = 'JOHN DUTAMBY' } = Astro.props as { name?: string };
 const tagline = 'Your next founding designer';
 const taglineChars = Array.from(tagline);
 ---
-<section class="mb-16" style="height: 90vh;">
+<section class="mb-16" style="height: 70vh;">
   <div class="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen overflow-visible">
     <h1 id="hero-title" class="hero-title font-display text-[18vw] md:text-[12vw] leading-none tracking-tight uppercase select-none -translate-y-[35%] whitespace-nowrap" aria-label={name}>
       {name}
     </h1>
   </div>
-  <div class="flex items-center justify-center mt-6" style="height: 120px;">
+  <div class="flex items-center justify-center mt-6" style="height: 60%;">
     <h2
       class="font-serif text-center tagline"
       style="font-family: 'Ovo', serif; font-size: 80px; line-height: 1;"

@@ -3,6 +3,8 @@ import { defineCollection, z } from 'astro:content';
 const work = defineCollection({
   schema: () => z.object({
     title: z.string(),
+    // Lower numbers appear first. If omitted, item will be sorted after those with an order.
+    order: z.number().int().optional(),
     date: z.string(), // YYYY-MM
     summary: z.string(),
     cover: z.string(),
