@@ -54,6 +54,31 @@ const { title = 'John Dutamby — Portfolio', description = 'Product Designer & 
         }
       })();
     </script>
+    <script>
+      // Save and restore scroll position per path within the same tab
+      (function() {
+        try {
+          var key = 'scroll:' + location.pathname;
+          var saved = sessionStorage.getItem(key);
+          if (saved) {
+            var y = parseInt(saved, 10);
+            if (!isNaN(y)) {
+              // Use requestAnimationFrame to ensure layout is ready
+              requestAnimationFrame(function() { window.scrollTo(0, y); });
+            }
+            sessionStorage.removeItem(key);
+          }
+          // pagehide works with BFCache; fallback to beforeunload
+          var handler = function() {
+            try {
+              sessionStorage.setItem(key, String(window.scrollY || window.pageYOffset || 0));
+            } catch (e) {}
+          };
+          window.addEventListener('pagehide', handler, { capture: true });
+          window.addEventListener('beforeunload', handler, { capture: true });
+        } catch (e) {}
+      })();
+    </script>
   </body>
   
 </html>
