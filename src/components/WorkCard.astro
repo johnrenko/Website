@@ -16,24 +16,22 @@ const {
   coverAlt?: string;
 };
 ---
-<a href={href} class="group block rounded-[24px] transition-colors bg-[#F6FCFE]">
-  <div class="p-2">
-    <div class="aspect-[16/9] overflow-hidden rounded-[18px] bg-zinc-200 shadow-[0_2px_2px_rgba(245,245,245,1)]">
-      {cover ? (
-        <img src={cover} alt={coverAlt} class="h-full w-full object-cover" loading="lazy" />
-      ) : (
-        <div class="h-full w-full flex items-center justify-center text-zinc-500 text-sm">{`{IMAGE}`}</div>
-      )}
-    </div>
+<a href={href} class="work-card group">
+  <div class="work-card-image">
+    {cover ? (
+      <img src={cover} alt={coverAlt} class="work-card-img" loading="lazy" />
+    ) : (
+      <div class="work-card-placeholder">{`{IMAGE}`}</div>
+    )}
   </div>
 
-  <div class="px-6 pb-6 pt-2">
-    <div class="mt-2 flex items-center gap-2 text-sm text-zinc-600">
-      {company && <span>{company}</span>}
-      {company && role && <span>•</span>}
-      {role && <span>{role}</span>}
+  <div class="work-card-content">
+    <div class="work-card-meta">
+      {company && <span class="work-card-company">{company}</span>}
+      {company && role && <span class="work-card-separator">•</span>}
+      {role && <span class="work-card-role">{role}</span>}
     </div>
-    <h3 class="mt-2 font-serif text-2xl leading-snug text-zinc-900 group-hover:text-pink-600" style="font-family: 'Inria Serif', serif;">
+    <h3 class="work-card-title">
       {title}
     </h3>
   </div>
