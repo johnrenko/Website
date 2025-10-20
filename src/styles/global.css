@@ -442,13 +442,6 @@ body {
   background: #fff;
   border: 1px solid #e4e4e7;
   border-radius: 0.75rem;
-  transition: all 0.3s ease;
-}
-
-.skill-category:hover {
-  border-color: #d4d4d8;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  transform: translateY(-2px);
 }
 
 .skill-title {
@@ -487,13 +480,6 @@ body {
   padding: 1.5rem;
   border-radius: 0.75rem;
   border: 1px solid #e4e4e7;
-  transition: all 0.3s ease;
-}
-
-.timeline-content:hover {
-  border-color: #d4d4d8;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  transform: translateY(-1px);
 }
 
 .timeline-header {
@@ -512,11 +498,6 @@ body {
   height: 60px;
   border-radius: 0.5rem;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease;
-}
-
-.timeline-content:hover .company-logo {
-  transform: scale(1.05);
 }
 
 .timeline-info {
@@ -559,12 +540,6 @@ body {
   border-radius: 1rem;
   font-size: 0.75rem;
   font-weight: 500;
-  transition: all 0.3s ease;
-}
-
-.timeline-tag:hover {
-  background: #e4e4e7;
-  color: #0a0a0a;
 }
 
 /* Work Section */
