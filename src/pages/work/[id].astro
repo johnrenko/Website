@@ -44,18 +44,27 @@ const heroImage = (entry.data.images && entry.data.images[0] && entry.data.image
       <div class="md:col-span-2 space-y-10">
         <div>
           <div class="text-sm uppercase tracking-wider text-zinc-500">Client</div>
-          <div class="mt-2 text-xl text-zinc-900  font-serif">{entry.data.title}</div>
+          <div class="mt-2 text-xl text-zinc-900 font-serif">{entry.data.company || entry.data.title}</div>
+          {entry.data.companyDescription && (
+            <p class="mt-2 text-zinc-800">{entry.data.companyDescription}</p>
+          )}
         </div>
         {entry.data.role && (
           <div>
             <div class="text-sm uppercase tracking-wider text-zinc-500">Rôle</div>
             <div class="mt-2 text-xl text-zinc-900 font-serif">{entry.data.role}</div>
+            {entry.data.roleDescription && (
+              <p class="mt-2 text-zinc-800">{entry.data.roleDescription}</p>
+            )}
           </div>
         )}
-        {(entry.data.impact) && (
+        {entry.data.impact && (
           <div>
-            <div class="text-sm uppercase tracking-wider text-zinc-500">Contexte</div>
-            <div class="mt-2 text-zinc-800">{entry.data.impact}</div>
+            <div class="text-sm uppercase tracking-wider text-zinc-500">Impact</div>
+            <div class="mt-2 text-xl text-zinc-900 font-serif">{entry.data.impact}</div>
+            {entry.data.impactDescription && (
+              <p class="mt-2 text-zinc-800">{entry.data.impactDescription}</p>
+            )}
           </div>
         )}
       </div>

@@ -20,13 +20,12 @@ const experiments = await getCollection('experiments');
 <BaseLayout title="John Dutamby — Portfolio" >
   <HeroHeader name="JOHN DUTAMBY" />
 
-  <section id="work" class="mb-20">
-    <div class="flex items-end justify-between mb-6">
+  <section id="work" class="mb-32">
+    <div class="mb-6">
       <h2 class="font-display text-3xl">Work</h2>
-      <a href="/work" class="text-sm underline">All work →</a>
     </div>
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      {sortedWorks.slice(0,3).map((w) => (
+      {sortedWorks.map((w) => (
         <WorkCard
           href={`/work/${w.id}`}
           company={w.data.title.split(' — ')[0] ?? ''}
@@ -39,25 +38,68 @@ const experiments = await getCollection('experiments');
     </div>
   </section>
 
-  <section id="experiments" class="mb-20">
-    <div class="flex items-end justify-between mb-6">
+  <!-- Animated Separator -->
+  <div class="section-separator mb-32">
+    <div class="separator-line"></div>
+    <div class="separator-dot"></div>
+    <div class="separator-line"></div>
+  </div>
+
+  <section id="experiments" class="mb-32">
+    <div class="mb-6">
       <h2 class="font-display text-3xl">Experiments</h2>
-      <a href="/experiments" class="text-sm underline">All experiments →</a>
     </div>
-    <ExperimentsGrid limit={8} />
+    <ExperimentsGrid />
   </section>
 
-  <section id="cv" class="mb-24">
+  <!-- Animated Separator -->
+  <div class="section-separator mb-32">
+    <div class="separator-line"></div>
+    <div class="separator-dot"></div>
+    <div class="separator-line"></div>
+  </div>
+
+  <section id="cv" class="mb-32">
     <h2 class="font-display text-3xl mb-4">Curriculum Vitae</h2>
     <CVSummary />
   </section>
 
-  <section id="contact" class="mb-24">
-    <h2 class="font-display text-3xl mb-4">Contact</h2>
-    <ul class="space-y-2">
-      <li><a href="mailto:john.dutamby@..." class="underline">Email</a></li>
-      <li><a href="https://www.linkedin.com/in/johndutamby/" class="underline" rel="noopener" target="_blank">LinkedIn</a></li>
-    </ul>
+  <!-- Animated Separator -->
+  <div class="section-separator mb-32">
+    <div class="separator-line"></div>
+    <div class="separator-dot"></div>
+    <div class="separator-line"></div>
+  </div>
+
+  <section id="contact" class="mb-32">
+    <div class="text-center max-w-2xl mx-auto">
+      <h2 class="font-display text-3xl mb-6">Let's Connect</h2>
+      <p class="text-zinc-600 mb-8 text-lg leading-relaxed">
+        I'm always interested in new opportunities, collaborations, and conversations about design, product, and innovation.
+      </p>
+      
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
+        <a href="mailto:john.dutamby@..." class="contact-card group">
+          <div class="contact-icon">✉</div>
+          <div class="contact-content">
+            <h3 class="contact-title">Email</h3>
+            <p class="contact-subtitle">john.dutamby@...</p>
+          </div>
+        </a>
+        
+        <a href="https://www.linkedin.com/in/johndutamby/" class="contact-card group" rel="noopener" target="_blank">
+          <div class="contact-icon">💼</div>
+          <div class="contact-content">
+            <h3 class="contact-title">LinkedIn</h3>
+            <p class="contact-subtitle">Professional Network</p>
+          </div>
+        </a>
+      </div>
+      
+      <div class="text-sm text-zinc-500">
+        <p>Available for freelance projects and full-time opportunities</p>
+      </div>
+    </div>
   </section>
 </BaseLayout>
 

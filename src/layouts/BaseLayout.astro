@@ -23,6 +23,19 @@ const { title = 'John Dutamby — Portfolio', description = 'Product Designer & 
         <button class="wip-banner__close" type="button" aria-label="Dismiss work in progress banner" data-wip-close>Close</button>
       </div>
     </div>
+    <!-- Scroll Header -->
+    <header class="scroll-header fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm border-b border-zinc-200 px-6 py-4 hidden" data-scroll-header>
+      <div class="mx-auto max-w-8xl flex items-center justify-between">
+        <div class="font-display text-lg">JOHN DUTAMBY</div>
+        <nav class="flex items-center space-x-6">
+          <a href="#work" class="text-sm underline hover:no-underline">Work</a>
+          <a href="#experiments" class="text-sm underline hover:no-underline">Experiments</a>
+          <a href="#cv" class="text-sm underline hover:no-underline">CV</a>
+          <a href="#contact" class="text-sm underline hover:no-underline">Contact</a>
+        </nav>
+      </div>
+    </header>
+
     <main class="mx-auto max-w-8xl px-6 py-10 overflow-hidden">
       <slot />
     </main>
@@ -77,6 +90,38 @@ const { title = 'John Dutamby — Portfolio', description = 'Product Designer & 
           window.addEventListener('pagehide', handler, { capture: true });
           window.addEventListener('beforeunload', handler, { capture: true });
         } catch (e) {}
+      })();
+    </script>
+    <script>
+      // Scroll header visibility
+      (function() {
+        const header = document.querySelector('[data-scroll-header]');
+        if (!header) return;
+        
+        let lastScrollY = window.scrollY;
+        let ticking = false;
+        
+        function updateHeader() {
+          const scrollY = window.scrollY;
+          
+          if (scrollY > 100) {
+            header.classList.remove('hidden');
+          } else {
+            header.classList.add('hidden');
+          }
+          
+          lastScrollY = scrollY;
+          ticking = false;
+        }
+        
+        function requestTick() {
+          if (!ticking) {
+            requestAnimationFrame(updateHeader);
+            ticking = true;
+          }
+        }
+        
+        window.addEventListener('scroll', requestTick, { passive: true });
       })();
     </script>
   </body>
