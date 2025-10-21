@@ -31,7 +31,7 @@ try {
   {mediaPaths.map((src) => {
     const fitClass = getObjectFitClass(src);
     return (
-      <button type="button" class="relative aspect-square overflow-hidden rounded-md border border-zinc-200 bg-zinc-100 group focus:outline-none focus:ring-2 focus:ring-zinc-400 cursor-pointer" data-media-src={src} aria-label="Open media">
+      <button type="button" class="relative aspect-square overflow-hidden rounded-md border border-zinc-200 bg-zinc-100 group focus:outline-none focus:ring-2 focus:ring-zinc-400 cursor-pointer" data-media-src={src} aria-label="Open media" data-track="Experiment Click" data-prop-media-src={src}>
         {src.toLowerCase().endsWith('.mp4') ? (
           <video src={src} muted playsinline loop autoplay preload="metadata" class={`absolute inset-0 h-full w-full ${fitClass}`}></video>
         ) : (
