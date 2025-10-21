@@ -23,7 +23,7 @@ const isWorkPage = Astro.url.pathname.startsWith('/work/');
         {/* Standard Plausible snippet with explicit domain */}
         <script
           defer
-          data-domain={(Astro.site && new URL(Astro.site).host) || 'johnrenko.github.io'}
+          data-domain={(Astro.site && new URL(Astro.site).host) || 'johnrenko.github.io' || 'johndutamby.com'}
           src="https://plausible.io/js/script.js"
         ></script>
         <script src="/js/analytics.js" is:inline></script>
