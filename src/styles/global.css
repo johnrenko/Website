@@ -335,13 +335,13 @@ body {
 
 .contact-subtitle {
   font-size: 0.875rem;
-  color: #71717a;
+  color: #000000;
   margin: 0;
   transition: color 0.3s ease;
 }
 
 .contact-card:hover .contact-subtitle {
-  color: #52525b;
+  color: #000000;
 }
 
 /* Copy notification */
@@ -416,7 +416,7 @@ body {
 
 .stat-label {
   font-size: 0.875rem;
-  color: #71717a;
+  color: #000000;
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
@@ -456,7 +456,7 @@ body {
 
 .skill-description {
   font-size: 0.875rem;
-  color: #71717a;
+  color: #000000;
   margin: 0;
   line-height: 1.5;
 }
@@ -516,14 +516,14 @@ body {
 
 .timeline-period {
   font-size: 0.875rem;
-  color: #71717a;
+  color: #000000;
   margin: 0;
   font-weight: 500;
 }
 
 .timeline-description {
   font-size: 0.875rem;
-  color: #52525b;
+  color: #000000;
   line-height: 1.6;
   margin: 0 0 1rem 0;
 }
@@ -538,7 +538,7 @@ body {
   display: inline-block;
   padding: 0.25rem 0.75rem;
   background: #f4f4f5;
-  color: #52525b;
+  color: #000000;
   border-radius: 1rem;
   font-size: 0.75rem;
   font-weight: 500;
@@ -624,7 +624,7 @@ body {
   gap: 0.5rem;
   margin-bottom: 0.75rem;
   font-size: 0.875rem;
-  color: #71717a;
+  color: #000000;
 }
 
 .work-card-company {
@@ -636,7 +636,7 @@ body {
 }
 
 .work-card-role {
-  color: #71717a;
+  color: #000000;
 }
 
 .work-card-title {
@@ -650,7 +650,7 @@ body {
 }
 
 .work-card:hover .work-card-title {
-  color: #52525b;
+  color: #000000;
 }
 
 
