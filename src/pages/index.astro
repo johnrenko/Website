@@ -15,7 +15,7 @@ const sortedWorks = works
     // Fallback: most recent date first (date is YYYY-MM)
     return (b.data.date || '').localeCompare(a.data.date || '');
   });
-const experiments = await getCollection('experiments');
+// Removed unused experiments collection fetch to avoid build error when empty
 ---
 <BaseLayout title="John Dutamby — Portfolio" >
   <HeroHeader name="JOHN DUTAMBY" />
@@ -84,9 +84,9 @@ const experiments = await getCollection('experiments');
 
   <section id="contact" class="mb-32">
     <div class="text-center max-w-2xl mx-auto">
-      <h2 class="font-display text-3xl mb-6">Let's Connect</h2>
+      <h2 class="font-display text-3xl mb-6">Rentrons en contact !</h2>
       <p class="text-zinc-600 mb-8 text-lg leading-relaxed">
-        I'm always interested in new opportunities, collaborations, and conversations about design, product, and innovation.
+        Je suis toujours ouvert à de nouvelles collaborations, missions freelance ou opportunités full-time, ainsi qu’à toute discussion autour du design, du produit et de l’innovation.
       </p>
       
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
@@ -97,7 +97,7 @@ const experiments = await getCollection('experiments');
           </div>
           <div class="contact-content">
             <h3 class="contact-title">Email</h3>
-            <p class="contact-subtitle">Click to copy to clipboard</p>
+            <p class="contact-subtitle">Cliquez pour copier mon email</p>
           </div>
         </button>
         
@@ -105,13 +105,16 @@ const experiments = await getCollection('experiments');
           <div class="contact-icon">💼</div>
           <div class="contact-content">
             <h3 class="contact-title">LinkedIn</h3>
-            <p class="contact-subtitle">Professional Network</p>
+            <p class="contact-subtitle">Ajoutez moi à votre réseau</p>
           </div>
         </a>
       </div>
       
-      <div class="text-sm text-zinc-500">
-        <p>Available for freelance projects and full-time opportunities</p>
+      <div class="flex justify-center">
+        <span class="inline-flex items-center gap-2 rounded-full border border-green-200 bg-green-50 px-2.5 py-1 text-xs font-medium text-green-700">
+          <span class="h-2 w-2 rounded-full bg-green-500"></span>
+          Disponible
+        </span>
       </div>
     </div>
   </section>
@@ -120,7 +123,7 @@ const experiments = await getCollection('experiments');
   <div id="copy-notification" class="copy-notification hidden">
     <div class="copy-notification-content">
       <span class="copy-notification-icon">✓</span>
-      <span class="copy-notification-text">Email copied to clipboard!</span>
+      <span class="copy-notification-text">Email copié</span>
     </div>
   </div>
 

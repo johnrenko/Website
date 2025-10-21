@@ -32,6 +32,20 @@ const experiments = defineCollection({
   })
 });
 
-export const collections = { work, experiments };
+// CV experiences timeline items
+const experiences = defineCollection({
+  schema: () => z.object({
+    role: z.string(),
+    period: z.string(),
+    description: z.string().optional(),
+    tags: z.array(z.string()).optional(),
+    logoSrc: z.string().optional(), // public path like /images/cv/xxx.png
+    logoAlt: z.string().optional(),
+    // Lower numbers appear first
+    order: z.number().int().optional()
+  })
+});
+
+export const collections = { work, experiments, experiences };
 
 
