@@ -10,6 +10,89 @@ export async function getStaticPaths() {
 const { entry } = Astro.props as { entry: any };
 const { Content } = await entry.render();
 
+// Function to get work-specific images with @2x support
+function getWorkImages(workId: string) {
+  // Static mapping of work IDs to their base image names (without extension)
+  const workImageMap: Record<string, string[]> = {
+    'livi-fr.mdx': [
+      'Livi1-mobile',
+      'Livi2-mobile',
+      'Livi3-mobile',
+      'Livi4-mobile',
+      'Livi5-mobile',
+      'Livi6-mobile',
+      'Livi7-mobile',
+      'Livi8-mobile',
+      'Livi9-mobile',
+      'Livi10-mobile',
+      'Livi11-mobile',
+      'Livi12-mobile',
+      'Livi13',
+      'Livi14'
+    ],
+    'paladin-fr.mdx': [
+      'Paladin1',
+      'Paladin2',
+      'Paladin3',
+      'Paladin4',
+      'Paladin5',
+      'Paladin6',
+      'Paladin7'
+    ],
+    'quitoxil-fr.mdx': [
+      'Quitoxil1-mobile',
+      'Quitoxil2-mobile',
+      'Quitoxil3-mobile',
+      'Quitoxil4-mobile',
+      'Quitoxil5-mobile',
+      'Quitoxil6-mobile',
+      'Quitoxil7-mobile',
+      'Quitoxil8-mobile',
+      'Quitoxil9-mobile',
+      'Quitoxil10-mobile',
+      'Quitoxil11-mobile',
+      'Quitoxil12-mobile',
+      'Quitoxil13-mobile',
+      'Quitoxil14-mobile'
+    ],
+    'deppart-fr.mdx': [
+      'deppart1-mobile',
+      'deppart2-mobile',
+      'deppart3-mobile',
+      'deppart4-mobile',
+      'deppart5-mobile',
+      'deppart6-mobile',
+      'deppart7-mobile'
+    ],
+    'zparse-fr.mdx': [
+      'Zparse1',
+      'Zparse2',
+      'Zparse3'
+    ]
+  };
+  
+  const baseImages = workImageMap[workId] || [];
+  const workFolder = workId.replace('-fr.mdx', '');
+  
+  return baseImages.map((imageName) => {
+    const isMobile = imageName.toLowerCase().endsWith('-mobile');
+    const oneX = `/images/${workFolder}/${imageName}.png`;
+    const retinaName = isMobile
+      ? imageName.replace(/-mobile$/i, '@2x-mobile')
+      : `${imageName}@2x`;
+    const twoX = `/images/${workFolder}/${retinaName}.png`;
+
+    return {
+      src: oneX,
+      srcSet: `${twoX} 2x, ${oneX} 1x`,
+      alt: `${imageName}`,
+    };
+  });
+}
+
+// Get work-specific images
+const workImages = getWorkImages(entry.id);
+
 // Build previous/next navigation using same ordering as index page
 const works = await getCollection('work');
 const sortedWorks = works
@@ -28,7 +111,7 @@ const next = currentIndex < sortedWorks.length - 1 ? sortedWorks[currentIndex + 
 const heroImage = (entry.data.images && entry.data.images[0] && entry.data.images[0].src) || entry.data.cover;
 ---
 <BaseLayout title={`${entry.data.summary} — ${entry.data.title}`}>
-  <a href="/" aria-label="Fermer et revenir à l’accueil" class="fixed top-6 right-6 z-40 inline-flex h-10 w-10 items-center justify-center rounded-full border border-zinc-300 bg-white/90 text-zinc-800 shadow-sm backdrop-blur transition hover:bg-white">
+  <a href="/" aria-label="Fermer et revenir à l'accueil" class="fixed top-6 right-6 z-40 inline-flex h-10 w-10 items-center justify-center rounded-full bg-black text-white shadow-sm transition hover:bg-zinc-800">
     <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
       <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
     </svg>
@@ -71,7 +154,7 @@ const heroImage = (entry.data.images && entry.data.images[0] && entry.data.image
     </section>
 
     {heroImage && (
-      <figure class="mb-16 md:mb-24 overflow-hidden rounded-2xl bg-zinc-200">
+      <figure class="mb-16 md:mb-24 overflow-hidden rounded-2xl">
         <img src={heroImage} alt={entry.data.title} class="w-full h-auto object-cover" />
       </figure>
     )}
@@ -79,6 +162,26 @@ const heroImage = (entry.data.images && entry.data.images[0] && entry.data.image
     <section class="prose prose-zinc max-w-none mb-20">
       <Content />
     </section>
+
+    {workImages.length > 0 && (
+      <section class="mb-20">
+        <div class="flex flex-wrap gap-8 justify-center">
+          {workImages.map((image: any) => {
+            const isMobile = image.alt.toLowerCase().includes('mobile');
+            return (
+              <figure class={`overflow-hidden rounded-2xl ${isMobile ? 'flex-none' : 'basis-full'}`}>
+                <img 
+                  src={image.src} 
+                  srcSet={image.srcSet}
+                  alt={`${entry.data.title} - Image ${image.alt}`}
+                  class={`h-auto object-cover ${isMobile ? 'max-w-[375px] mx-auto' : 'w-full'}`}
+                />
+              </figure>
+            );
+          })}
+        </div>
+      </section>
+    )}
 
     <nav class="flex items-center justify-between border-t pt-6">
       <div>
