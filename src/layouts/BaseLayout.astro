@@ -26,7 +26,7 @@ const isWorkPage = Astro.url.pathname.startsWith('/work/');
     </div>
     <!-- Scroll Header -->
     {!isWorkPage && (
-      <header class="scroll-header fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm border-b border-zinc-200 px-6 py-4 hidden" data-scroll-header>
+      <header class="scroll-header fixed top-0 left-0 right-0 z-50 bg-white border-b border-zinc-200 shadow-sm px-6 py-4 hidden" data-scroll-header>
         <div class="mx-auto max-w-8xl flex items-center justify-between">
           <div class="font-display text-lg">JOHN DUTAMBY</div>
         <nav class="flex items-center space-x-6">
@@ -39,7 +39,7 @@ const isWorkPage = Astro.url.pathname.startsWith('/work/');
       </header>
     )}
 
-    <main class="mx-auto max-w-8xl px-6 py-10 overflow-hidden">
+    <main class="mx-auto max-w-8xl px-6 py-10">
       <slot />
     </main>
     <script>
