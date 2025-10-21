@@ -9,7 +9,9 @@ const isWorkPage = Astro.url.pathname.startsWith('/work/');
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
-    <link rel="icon" href="/favicon.ico" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="alternate icon" href="/favicon.ico" />
+    <link rel="mask-icon" href="/favicon.svg" color="#111827" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400&family=Roboto:wght@400&family=Playfair+Display:wght@400&family=Lora:wght@400&family=Poppins:wght@400&family=Space+Mono:wght@400&family=Ovo&display=swap" rel="stylesheet" />
