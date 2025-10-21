@@ -20,10 +20,12 @@ const isWorkPage = Astro.url.pathname.startsWith('/work/');
     {/* Privacy-friendly analytics by Plausible */}
     {import.meta.env.PROD && (
       <>
-        <script async src="https://plausible.io/js/pa-Pv4DWLWdZvp6SYrRq82cD.js"></script>
-        <script>
-          {`window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init()`}
-        </script>
+        {/* Standard Plausible snippet with explicit domain */}
+        <script
+          defer
+          data-domain={(Astro.site && new URL(Astro.site).host) || 'johnrenko.github.io'}
+          src="https://plausible.io/js/script.js"
+        ></script>
         <script src="/js/analytics.js" is:inline></script>
       </>
     )}
