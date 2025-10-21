@@ -16,7 +16,7 @@ const {
   coverAlt?: string;
 };
 ---
-<a href={href} class="work-card group">
+<a href={href} class="work-card group" data-track="Work Card Click" data-prop-company={company} data-prop-destination={href}>
   <div class="work-card-image">
     {cover ? (
       <img src={cover} alt={coverAlt} class="work-card-img" loading="lazy" />
