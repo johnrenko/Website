@@ -1,7 +1,7 @@
 ---
 const { name = 'JOHN DUTAMBY' } = Astro.props as { name?: string };
-const tagline = 'Your next founding designer';
-const taglineChars = Array.from(tagline);
+const tagline = 'Votre prochain founding designer';
+const taglineWords = tagline.split(' ');
 ---
 <section class="mb-16" style="height: 50vh;">
   <div class="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen overflow-visible">
@@ -14,15 +14,19 @@ const taglineChars = Array.from(tagline);
       {name}
     </h1>
   </div>
-  <div class="flex items-center justify-center mt-6" style="height: 100%;">
+  <div class="flex items-center justify-center mt-6 px-4" style="height: 100%;">
     <h2
-      class="font-serif text-center tagline"
-      style="font-family: 'Ovo', serif; font-size: 80px; line-height: 1; cursor: url('/images/cursor/wand.svg') 6 6, auto;"
+      class="font-serif text-center tagline responsive-tagline"
+      style="font-family: 'Ovo', serif; cursor: url('/images/cursor/wand.svg') 6 6, auto;"
       aria-label={tagline}
     >
-      {taglineChars.map((c, i) => (
-        <span class="tagline-letter inline-block" data-index={i}>{c === ' ' ? '\u00A0' : c}</span>
-      ))}
+      {taglineWords.map((word, wi) => (
+        <span class="tagline-word inline-block">
+          {Array.from(word).map((c, ci) => (
+            <span class="tagline-letter inline-block" data-index={`${wi}-${ci}`}>{c}</span>
+          ))}
+        </span>
+      )).reduce((acc, wordEl, idx) => idx === 0 ? [wordEl] : acc.concat([<span class="tagline-space" aria-hidden="true">&nbsp;</span>, wordEl]), [])}
     </h2>
   </div>
 </section>
@@ -49,7 +53,32 @@ const taglineChars = Array.from(tagline);
   .hero-title:hover { --r: 1400px; }
   .tagline-letter { transition: transform 120ms ease-in-out; }
   .tagline-letter:hover { transform: translateY(-2px); }
-  .tagline { white-space: nowrap; }
+  .tagline-word { white-space: nowrap; }
+  .tagline-space { display: inline; }
+  
+  /* Responsive tagline styling */
+  .responsive-tagline {
+    font-size: clamp(2rem, 8vw, 5rem);
+    line-height: 1.1;
+    max-width: 90vw;
+    word-wrap: break-word;
+    hyphens: auto;
+  }
+  
+  /* Allow wrapping on smaller screens */
+  @media (max-width: 768px) {
+    .responsive-tagline {
+      white-space: normal;
+      word-break: keep-all;
+    }
+  }
+  
+  /* Keep single line on larger screens */
+  @media (min-width: 769px) {
+    .responsive-tagline {
+      white-space: nowrap;
+    }
+  }
 </style>
 
 <script>

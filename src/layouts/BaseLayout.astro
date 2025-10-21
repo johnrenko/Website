@@ -16,14 +16,6 @@ const isWorkPage = Astro.url.pathname.startsWith('/work/');
     <title>{title}</title>
   </head>
   <body class="min-h-screen">
-    <div class="wip-banner" data-wip-banner>
-      <div class="wip-banner__inner">
-        <span class="wip-banner__icon" aria-hidden="true"></span>
-        <span class="wip-banner__text">Work In Progress</span>
-        <span class="wip-banner__sub">Please come back later — things are being built!</span>
-        <button class="wip-banner__close" type="button" aria-label="Dismiss work in progress banner" data-wip-close>Close</button>
-      </div>
-    </div>
     <!-- Scroll Header -->
     {!isWorkPage && (
       <header class="scroll-header fixed top-0 left-0 right-0 z-50 bg-white border-b border-zinc-200 shadow-sm px-6 py-4 hidden" data-scroll-header>
@@ -42,34 +34,6 @@ const isWorkPage = Astro.url.pathname.startsWith('/work/');
     <main class="mx-auto max-w-8xl px-6 py-10">
       <slot />
     </main>
-    <script>
-      // Persist dismissal for current browser using localStorage
-      (function() {
-        try {
-          var key = 'wipBannerDismissed';
-          var container = document.querySelector('[data-wip-banner]');
-          if (!container) return;
-          if (localStorage.getItem(key) === 'true') {
-            container.parentNode && container.parentNode.removeChild(container);
-            return;
-          }
-          var btn = container.querySelector('[data-wip-close]');
-          if (btn) {
-            btn.addEventListener('click', function() {
-              localStorage.setItem(key, 'true');
-              container.parentNode && container.parentNode.removeChild(container);
-            });
-          }
-        } catch (e) {
-          // If storage unavailable, still allow dismiss for this session
-          var c = document.querySelector('[data-wip-banner]');
-          var b = c && c.querySelector('[data-wip-close]');
-          b && b.addEventListener('click', function() {
-            c.parentNode && c.parentNode.removeChild(c);
-          });
-        }
-      })();
-    </script>
     <script>
       // Save and restore scroll position per path within the same tab
       (function() {

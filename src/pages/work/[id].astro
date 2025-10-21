@@ -108,7 +108,7 @@ const currentIndex = sortedWorks.findIndex((e) => e.id === entry.id);
 const prev = currentIndex > 0 ? sortedWorks[currentIndex - 1] : null;
 const next = currentIndex < sortedWorks.length - 1 ? sortedWorks[currentIndex + 1] : null;
 
-const heroImage = (entry.data.images && entry.data.images[0] && entry.data.images[0].src) || entry.data.cover;
+// No cover image on work pages; covers are shown only on the homepage
 ---
 <BaseLayout title={`${entry.data.summary} — ${entry.data.title}`}>
   <a href="/" aria-label="Fermer et revenir à l'accueil" class="fixed top-6 right-6 z-40 inline-flex h-10 w-10 items-center justify-center rounded-full bg-black text-white shadow-sm transition hover:bg-zinc-800">
@@ -153,11 +153,7 @@ const heroImage = (entry.data.images && entry.data.images[0] && entry.data.image
       </div>
     </section>
 
-    {heroImage && (
-      <figure class="mb-16 md:mb-24 overflow-hidden rounded-2xl">
-        <img src={heroImage} alt={entry.data.title} class="w-full h-auto object-cover" />
-      </figure>
-    )}
+    
 
     <section class="prose prose-zinc max-w-none mb-20">
       <Content />
