@@ -1,32 +1,6 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import { getCollection } from 'astro:content';
-import WorkCard from "../../components/WorkCard.astro";
-const works = await getCollection('work');
-const sortedWorks = works
-  .slice()
-  .sort((a, b) => {
-    const orderA = typeof a.data.order === 'number' ? a.data.order : Number.POSITIVE_INFINITY;
-    const orderB = typeof b.data.order === 'number' ? b.data.order : Number.POSITIVE_INFINITY;
-    if (orderA !== orderB) return orderA - orderB; // lower order first
-    // Fallback: most recent date first (date is YYYY-MM)
-    return (b.data.date || '').localeCompare(a.data.date || '');
-  });
+import WorkIndex from '../_shared/WorkIndex.astro';
 ---
-<BaseLayout title="All Work — John Dutamby">
-  <h1 class="font-display text-4xl mb-8">All work</h1>
-  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-    {sortedWorks.map((w) => (
-      <WorkCard
-        href={`/work/${w.id}`}
-        company={w.data.title.split(' — ')[0] ?? ''}
-        role={w.data.role}
-        title={w.data.summary}
-        cover={w.data.cover}
-        coverAlt={w.data.title}
-      />
-    ))}
-  </div>
-</BaseLayout>
+<WorkIndex locale="en" />
 
 

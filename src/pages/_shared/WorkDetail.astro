@@ -1,0 +1,113 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import { t } from '../../i18n/t.js';
+import type { Locale } from '../../i18n/config.js';
+
+export interface Props {
+  entry: any;
+  locale: Locale;
+}
+
+const { entry, locale } = Astro.props;
+const { Content } = await entry.render();
+
+// Build previous/next navigation using same ordering as index page
+const works = await getCollection('work');
+const sortedWorks = works
+  .filter(work => work.data.locale === locale)
+  .slice()
+  .sort((a, b) => {
+    const orderA = typeof a.data.order === 'number' ? a.data.order : Number.POSITIVE_INFINITY;
+    const orderB = typeof b.data.order === 'number' ? b.data.order : Number.POSITIVE_INFINITY;
+    if (orderA !== orderB) return orderA - orderB;
+    return (b.data.date || '').localeCompare(a.data.date || '');
+  });
+
+const currentIndex = sortedWorks.findIndex((e) => e.id === entry.id);
+const prev = currentIndex > 0 ? sortedWorks[currentIndex - 1] : null;
+const next = currentIndex < sortedWorks.length - 1 ? sortedWorks[currentIndex + 1] : null;
+
+const heroImage = (entry.data.images && entry.data.images[0] && entry.data.images[0].src) || entry.data.cover;
+---
+<BaseLayout title={`${entry.data.summary} — ${entry.data.title}`} locale={locale}>
+  <a href={locale === 'fr' ? '/fr/' : '/'} aria-label={t('work.close', locale)} class="fixed top-6 right-6 z-40 inline-flex h-10 w-10 items-center justify-center rounded-full border border-zinc-300 bg-white/90 text-zinc-800 shadow-sm backdrop-blur transition hover:bg-white">
+    <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+      <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+    </svg>
+  </a>
+  <article class="max-w-5xl mx-auto">
+    <header class="mb-14 md:mb-20">
+      <h1 class="font-serif text-5xl md:text-7xl leading-[1.05] tracking-tight font-serif text-balance">
+        {entry.data.summary}
+      </h1>
+    </header>
+
+    <section class="grid gap-10 md:grid-cols-3 md:gap-12 mb-16 md:mb-20">
+      <div class="md:col-span-2 space-y-10">
+        <div>
+          <div class="text-sm uppercase tracking-wider text-zinc-500">{t('work.client', locale)}</div>
+          <div class="mt-2 text-xl text-zinc-900 font-serif">{entry.data.company || entry.data.title}</div>
+          {entry.data.companyDescription && (
+            <p class="mt-2 text-zinc-800">{entry.data.companyDescription}</p>
+          )}
+        </div>
+        {entry.data.role && (
+          <div>
+            <div class="text-sm uppercase tracking-wider text-zinc-500">{t('work.role', locale)}</div>
+            <div class="mt-2 text-xl text-zinc-900 font-serif">{entry.data.role}</div>
+            {entry.data.roleDescription && (
+              <p class="mt-2 text-zinc-800">{entry.data.roleDescription}</p>
+            )}
+          </div>
+        )}
+        {entry.data.impact && (
+          <div>
+            <div class="text-sm uppercase tracking-wider text-zinc-500">{t('work.impact', locale)}</div>
+            <div class="mt-2 text-xl text-zinc-900 font-serif">{entry.data.impact}</div>
+            {entry.data.impactDescription && (
+              <p class="mt-2 text-zinc-800">{entry.data.impactDescription}</p>
+            )}
+          </div>
+        )}
+      </div>
+    </section>
+
+    {heroImage && (
+      <figure class="mb-16 md:mb-24 overflow-hidden rounded-2xl bg-zinc-200">
+        <img src={heroImage} alt={entry.data.title} class="w-full h-auto object-cover" />
+      </figure>
+    )}
+
+    <section class="prose prose-zinc max-w-none mb-20">
+      <Content />
+    </section>
+
+    <nav class="flex items-center justify-between border-t pt-6">
+      <div>
+        {prev ? (
+          <a href={`/work/${prev.id}`} class="group inline-flex items-center gap-3 text-zinc-700 hover:text-zinc-900">
+            <span aria-hidden="true" class="text-lg inline-block transition-transform duration-200 ease-out group-hover:-translate-x-1">←</span>
+            <span class="flex flex-col">
+              <span class="text-xs uppercase tracking-wider text-zinc-500">{t('work.previous', locale)}</span>
+              <span class="font-medium font-serif text-xl transition-all duration-200 ease-out group-hover:tracking-tight">{prev.data.summary}</span>
+            </span>
+          </a>
+        ) : (
+          <span></span>
+        )}
+      </div>
+      <div class="text-right">
+        {next && (
+          <a href={`/work/${next.id}`} class="group inline-flex items-center gap-3 text-zinc-700 hover:text-zinc-900">
+            <span class="flex flex-col text-right">
+              <span class="text-xs uppercase tracking-wider text-zinc-500">{t('work.next', locale)}</span>
+              <span class="font-medium font-serif text-xl transition-all duration-200 ease-out group-hover:tracking-tight">{next.data.summary}</span>
+            </span>
+            <span aria-hidden="true" class="text-lg inline-block transition-transform duration-200 ease-out group-hover:translate-x-1">→</span>
+          </a>
+        )}
+      </div>
+    </nav>
+  </article>
+</BaseLayout>

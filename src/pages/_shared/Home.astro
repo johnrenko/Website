@@ -1,0 +1,169 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import HeroHeader from "../../components/HeroHeader.astro";
+import ExperimentsGrid from "../../components/ExperimentsGrid.astro";
+import { getCollection } from 'astro:content';
+import CVSummary from "../../components/CVSummary.astro";
+import WorkCard from "../../components/WorkCard.astro";
+import { t } from '../../i18n/t.js';
+import type { Locale } from '../../i18n/config.js';
+
+export interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+
+const works = await getCollection('work');
+const sortedWorks = works
+  .filter(work => work.data.locale === locale)
+  .slice()
+  .sort((a, b) => {
+    const orderA = typeof a.data.order === 'number' ? a.data.order : Number.POSITIVE_INFINITY;
+    const orderB = typeof b.data.order === 'number' ? b.data.order : Number.POSITIVE_INFINITY;
+    if (orderA !== orderB) return orderA - orderB; // lower order first
+    // Fallback: most recent date first (date is YYYY-MM)
+    return (b.data.date || '').localeCompare(a.data.date || '');
+  });
+const experiments = await getCollection('experiments');
+---
+<BaseLayout title="John Dutamby — Portfolio" locale={locale}>
+  <HeroHeader name="JOHN DUTAMBY" locale={locale} />
+
+  <section id="work" class="mb-32">
+    <div class="text-center max-w-4xl mx-auto">
+      <h2 class="font-display text-3xl mb-6">{t('home.featuredWork.title', locale)}</h2>
+      <p class="text-zinc-600 mb-12 text-lg leading-relaxed">
+        {t('home.featuredWork.description', locale)}
+      </p>
+      <div class="work-grid">
+        {sortedWorks.map((w) => (
+          <WorkCard
+            href={`/work/${w.id}`}
+            company={w.data.title.split(' — ')[0] ?? ''}
+            role={w.data.role}
+            title={w.data.summary}
+            cover={w.data.cover}
+            coverAlt={w.data.title}
+            locale={locale}
+          />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Animated Separator -->
+  <div class="section-separator mb-32">
+    <div class="separator-line"></div>
+    <div class="separator-dot"></div>
+    <div class="separator-line"></div>
+  </div>
+
+  <section id="experiments" class="mb-32">
+    <div class="text-center max-w-4xl mx-auto">
+      <h2 class="font-display text-3xl mb-6">{t('home.experiments.title', locale)}</h2>
+      <p class="text-zinc-600 mb-12 text-lg leading-relaxed">
+        {t('home.experiments.description', locale)}
+      </p>
+      <ExperimentsGrid locale={locale} />
+    </div>
+  </section>
+
+  <!-- Animated Separator -->
+  <div class="section-separator mb-32">
+    <div class="separator-line"></div>
+    <div class="separator-dot"></div>
+    <div class="separator-line"></div>
+  </div>
+
+  <section id="cv" class="mb-32">
+    <div class="text-center max-w-4xl mx-auto">
+      <h2 class="font-display text-3xl mb-6">{t('home.cv.title', locale)}</h2>
+      <p class="text-zinc-600 mb-12 text-lg leading-relaxed">
+        {t('home.cv.description', locale)}
+      </p>
+      <CVSummary locale={locale} />
+    </div>
+  </section>
+
+  <!-- Animated Separator -->
+  <div class="section-separator mb-32">
+    <div class="separator-line"></div>
+    <div class="separator-dot"></div>
+    <div class="separator-line"></div>
+  </div>
+
+  <section id="contact" class="mb-32">
+    <div class="text-center max-w-2xl mx-auto">
+      <h2 class="font-display text-3xl mb-6">{t('home.contact.title', locale)}</h2>
+      <p class="text-zinc-600 mb-8 text-lg leading-relaxed">
+        {t('home.contact.description', locale)}
+      </p>
+      
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
+        <button type="button" class="contact-card group" data-copy-email>
+          <div class="contact-icon">
+            <span class="contact-icon-default">✉</span>
+            <span class="contact-icon-hover">📋</span>
+          </div>
+          <div class="contact-content">
+            <h3 class="contact-title">{t('home.contact.email', locale)}</h3>
+            <p class="contact-subtitle">{t('home.contact.emailSubtitle', locale)}</p>
+          </div>
+        </button>
+        
+        <a href="https://www.linkedin.com/in/johndutamby/" class="contact-card group" rel="noopener" target="_blank">
+          <div class="contact-icon">💼</div>
+          <div class="contact-content">
+            <h3 class="contact-title">{t('home.contact.linkedin', locale)}</h3>
+            <p class="contact-subtitle">{t('home.contact.linkedinSubtitle', locale)}</p>
+          </div>
+        </a>
+      </div>
+      
+      <div class="text-sm text-zinc-500">
+        <p>{t('home.contact.availability', locale)}</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Copy to clipboard notification -->
+  <div id="copy-notification" class="copy-notification hidden">
+    <div class="copy-notification-content">
+      <span class="copy-notification-icon">✓</span>
+      <span class="copy-notification-text">{t('home.contact.emailCopied', locale)}</span>
+    </div>
+  </div>
+
+  <script>
+    // Copy email to clipboard functionality
+    (function() {
+      const emailButton = document.querySelector('[data-copy-email]');
+      const notification = document.getElementById('copy-notification');
+      const email = 'john.dutamby@gmail.com';
+      
+      if (!emailButton || !notification) return;
+      
+      async function copyEmailToClipboard() {
+        try {
+          await navigator.clipboard.writeText(email);
+          
+          // Show notification
+          notification.classList.remove('hidden');
+          
+          // Hide notification after 3 seconds
+          setTimeout(() => {
+            notification.classList.add('hidden');
+          }, 3000);
+          
+        } catch (err) {
+          console.error('Failed to copy email:', err);
+          // Fallback: show alert
+          alert(`Email: ${email}`);
+        }
+      }
+      
+      emailButton.addEventListener('click', copyEmailToClipboard);
+    })();
+  </script>
+</BaseLayout>

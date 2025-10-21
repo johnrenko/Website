@@ -1,0 +1,78 @@
+---
+import { getLocalizedPath, otherLocale } from '../i18n/config.js';
+import { t } from '../i18n/t.js';
+import type { Locale } from '../i18n/config.js';
+
+export interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const otherLang = otherLocale(locale);
+const currentPath = Astro.url.pathname;
+const otherPath = getLocalizedPath(currentPath, otherLang);
+---
+
+<div class="language-switcher">
+  <a 
+    href={otherPath} 
+    class="language-link"
+    data-lang-switch
+    data-target-lang={otherLang}
+  >
+    <span class="flag">{locale === 'en' ? '🇬🇧' : '🇫🇷'}</span>
+    {t(`lang.${locale}`, locale)}
+  </a>
+</div>
+
+<style>
+  .language-switcher {
+    position: fixed;
+    bottom: 6px;
+    right: 6px;
+    z-index: 50;
+  }
+  
+  .language-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid rgb(212 212 216);
+    background-color: rgba(255, 255, 255, 0.9);
+    color: rgb(39 39 42);
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    backdrop-filter: blur(8px);
+    transition: all 0.2s ease;
+  }
+  
+  .flag {
+    font-size: 16px;
+  }
+  
+  .language-link:hover {
+    background-color: white;
+    border-color: rgb(161 161 170);
+  }
+</style>
+
+<script>
+  // Handle language switching with cookie
+  (function() {
+    const links = document.querySelectorAll('[data-lang-switch]');
+    
+    links.forEach(link => {
+      link.addEventListener('click', function(e) {
+        const targetLang = this.getAttribute('data-target-lang');
+        if (targetLang) {
+          // Set cookie to remember language preference
+          document.cookie = `lang=${targetLang}; path=/; max-age=${60 * 60 * 24 * 365}`; // 1 year
+        }
+      });
+    });
+  })();
+</script>

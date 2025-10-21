@@ -1,0 +1,12 @@
+---
+import WorkDetail from '../../_shared/WorkDetail.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('work');
+  return entries.map((e) => ({ params: { id: e.id }, props: { entry: e } }));
+}
+
+const { entry } = Astro.props as { entry: any };
+---
+<WorkDetail entry={entry} locale="fr" />

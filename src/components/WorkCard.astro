@@ -1,4 +1,6 @@
 ---
+import type { Locale } from '../i18n/config.js';
+
 // Props allow using the component with CMS entries or ad-hoc data
 const {
   href = '#',
@@ -7,6 +9,7 @@ const {
   title,
   cover,
   coverAlt = '',
+  locale = 'en',
 } = Astro.props as {
   href?: string;
   company: string;
@@ -14,6 +17,7 @@ const {
   title: string;
   cover: string;
   coverAlt?: string;
+  locale?: Locale;
 };
 ---
 <a href={href} class="work-card group">

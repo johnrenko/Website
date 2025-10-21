@@ -1,6 +1,9 @@
 ---
-const { name = 'JOHN DUTAMBY' } = Astro.props as { name?: string };
-const tagline = 'Your next founding designer';
+import { t } from '../i18n/t.js';
+import type { Locale } from '../i18n/config.js';
+
+const { name = 'JOHN DUTAMBY', locale = 'en' } = Astro.props as { name?: string; locale?: Locale };
+const tagline = t('home.tagline', locale);
 const taglineChars = Array.from(tagline);
 ---
 <section class="mb-16" style="height: 50vh;">

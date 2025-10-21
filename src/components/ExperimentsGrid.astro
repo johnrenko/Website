@@ -1,7 +1,8 @@
 ---
 import { readdir } from 'node:fs/promises';
+import type { Locale } from '../i18n/config.js';
 
-const { limit } = Astro.props as { limit?: number };
+const { limit, locale = 'en' } = Astro.props as { limit?: number; locale?: Locale };
 
 const experimentsDir = new URL('../../public/images/experiments/', import.meta.url);
 let mediaPaths: string[] = [];

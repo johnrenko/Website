@@ -19,7 +19,9 @@ const work = defineCollection({
       src: z.string(),
       alt: z.string(),
       caption: z.string().optional()
-    })).optional()
+    })).optional(),
+    locale: z.enum(['en', 'fr']).default('en'),
+    id: z.string().optional()
   })
 });
 

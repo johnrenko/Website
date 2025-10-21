@@ -1,29 +1,33 @@
 ---
 import CVExperienceItem from './CVExperienceItem.astro';
+import { t } from '../i18n/t.js';
+import type { Locale } from '../i18n/config.js';
+
+const { locale = 'en' } = Astro.props as { locale?: Locale };
 ---
 <div class="cv-container">
   <div class="cv-intro">
     <div class="cv-skills">
-      <h3 class="cv-section-title">Core Expertise</h3>
+      <h3 class="cv-section-title">{t('cv.coreExpertise', locale)}</h3>
       <div class="skills-grid">
         <div class="skill-category">
-          <h4 class="skill-title">Design</h4>
-          <p class="skill-description">User Research, Prototyping, Design Systems, Strategy</p>
+          <h4 class="skill-title">{t('cv.design', locale)}</h4>
+          <p class="skill-description">{t('cv.designDescription', locale)}</p>
         </div>
         <div class="skill-category">
-          <h4 class="skill-title">Product</h4>
-          <p class="skill-description">Roadmapping, Product-Market Fit, User Interviews</p>
+          <h4 class="skill-title">{t('cv.product', locale)}</h4>
+          <p class="skill-description">{t('cv.productDescription', locale)}</p>
         </div>
         <div class="skill-category">
-          <h4 class="skill-title">Leadership</h4>
-          <p class="skill-description">Team Management, Design Vision, Strategic Direction</p>
+          <h4 class="skill-title">{t('cv.leadership', locale)}</h4>
+          <p class="skill-description">{t('cv.leadershipDescription', locale)}</p>
         </div>
       </div>
     </div>
   </div>
 
   <div class="cv-experiences">
-    <h3 class="cv-section-title">Professional Experience</h3>
+    <h3 class="cv-section-title">{t('cv.professionalExperience', locale)}</h3>
     <div class="timeline">
       <CVExperienceItem role="Freelance Founding product × designer - PrDe" period="March 23 – Currently" description="Partner with startups and founders to define roadmaps, interview users, and launch products that solve real‑world problems." tags={["User interviews","Roadmap","Vision"]} logoSrc="/images/cv/Former%20clients-6.png" logoAlt="Freelance" />
       <CVExperienceItem role="Head of design - Livi" period="2019 – 2022" description="Led a team of 9, setting the local design vision and strategic direction." tags={["Strategy","Management","Vision"]} logoSrc="/images/cv/Former%20clients-5.png" logoAlt="Livi" />

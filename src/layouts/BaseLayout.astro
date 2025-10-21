@@ -1,10 +1,29 @@
 ---
 import "../styles/global.css";
-const { title = 'John Dutamby — Portfolio', description = 'Product Designer & PM' } = Astro.props as { title?: string; description?: string };
+import { getLocalizedPath } from '../i18n/config.js';
+import { t } from '../i18n/t.js';
+import type { Locale } from '../i18n/config.js';
+import LanguageSwitcher from '../components/LanguageSwitcher.astro';
+
+const { 
+  title = 'John Dutamby — Portfolio', 
+  description = 'Product Designer & PM',
+  locale = 'en'
+} = Astro.props as { 
+  title?: string; 
+  description?: string; 
+  locale?: Locale;
+};
+
 const isWorkPage = Astro.url.pathname.startsWith('/work/');
+
+// Generate hreflang URLs
+const currentPath = Astro.url.pathname;
+const enUrl = Astro.site + getLocalizedPath(currentPath, 'en');
+const frUrl = Astro.site + getLocalizedPath(currentPath, 'fr');
 ---
 <!DOCTYPE html>
-<html lang="fr">
+<html lang={locale}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -13,15 +32,21 @@ const isWorkPage = Astro.url.pathname.startsWith('/work/');
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400&family=Roboto:wght@400&family=Playfair+Display:wght@400&family=Lora:wght@400&family=Poppins:wght@400&family=Space+Mono:wght@400&family=Ovo&display=swap" rel="stylesheet" />
+    
+    <!-- hreflang alternates -->
+    <link rel="alternate" hreflang="en" href={enUrl} />
+    <link rel="alternate" hreflang="fr" href={frUrl} />
+    <link rel="alternate" hreflang="x-default" href={enUrl} />
+    
     <title>{title}</title>
   </head>
   <body class="min-h-screen">
     <div class="wip-banner" data-wip-banner>
       <div class="wip-banner__inner">
         <span class="wip-banner__icon" aria-hidden="true"></span>
-        <span class="wip-banner__text">Work In Progress</span>
-        <span class="wip-banner__sub">Please come back later — things are being built!</span>
-        <button class="wip-banner__close" type="button" aria-label="Dismiss work in progress banner" data-wip-close>Close</button>
+        <span class="wip-banner__text">{t('wip.title', locale)}</span>
+        <span class="wip-banner__sub">{t('wip.subtitle', locale)}</span>
+        <button class="wip-banner__close" type="button" aria-label="Dismiss work in progress banner" data-wip-close>{t('wip.close', locale)}</button>
       </div>
     </div>
     <!-- Scroll Header -->
@@ -30,10 +55,10 @@ const isWorkPage = Astro.url.pathname.startsWith('/work/');
         <div class="mx-auto max-w-8xl flex items-center justify-between">
           <div class="font-display text-lg">JOHN DUTAMBY</div>
         <nav class="flex items-center space-x-6">
-          <a href="#work" class="nav-link text-sm underline hover:no-underline" data-section="work">Work</a>
-          <a href="#experiments" class="nav-link text-sm underline hover:no-underline" data-section="experiments">Experiments</a>
-          <a href="#cv" class="nav-link text-sm underline hover:no-underline" data-section="cv">CV</a>
-          <a href="#contact" class="nav-link text-sm underline hover:no-underline" data-section="contact">Contact</a>
+          <a href="#work" class="nav-link text-sm underline hover:no-underline" data-section="work">{t('nav.work', locale)}</a>
+          <a href="#experiments" class="nav-link text-sm underline hover:no-underline" data-section="experiments">{t('nav.experiments', locale)}</a>
+          <a href="#cv" class="nav-link text-sm underline hover:no-underline" data-section="cv">{t('nav.cv', locale)}</a>
+          <a href="#contact" class="nav-link text-sm underline hover:no-underline" data-section="contact">{t('nav.contact', locale)}</a>
         </nav>
         </div>
       </header>
@@ -42,6 +67,8 @@ const isWorkPage = Astro.url.pathname.startsWith('/work/');
     <main class="mx-auto max-w-8xl px-6 py-10 overflow-hidden">
       <slot />
     </main>
+    
+    <LanguageSwitcher locale={locale} />
     <script>
       // Persist dismissal for current browser using localStorage
       (function() {
