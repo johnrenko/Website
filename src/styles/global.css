@@ -137,15 +137,17 @@ body {
 /* Scroll Header */
 .scroll-header {
   transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+  will-change: transform, opacity;
+  backface-visibility: hidden;
 }
 
 .scroll-header.hidden {
-  transform: translateY(-100%);
+  transform: translate3d(0, -100%, 0);
   opacity: 0;
 }
 
 .scroll-header:not(.hidden) {
-  transform: translateY(0);
+  transform: translate3d(0, 0, 0);
   opacity: 1;
 }
 
