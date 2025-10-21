@@ -8,8 +8,12 @@ const work = defineCollection({
     date: z.string(), // YYYY-MM
     summary: z.string(),
     cover: z.string(),
+    company: z.string().optional(),
+    companyDescription: z.string().optional(),
     role: z.string().optional(),
+    roleDescription: z.string().optional(),
     impact: z.string().optional(),
+    impactDescription: z.string().optional(),
     tags: z.array(z.string()).optional(),
     images: z.array(z.object({
       src: z.string(),

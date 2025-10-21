@@ -9,28 +9,32 @@ interface Props {
 }
 const { role, period, description = '', tags = [], logoSrc, logoAlt = '' } = Astro.props as Props;
 ---
-<li>
-  <div class="flex items-start justify-between gap-4">
-    <div class="flex align-center gap-6 min-w-0">
-      {logoSrc && (
-        <img src={logoSrc} alt={logoAlt} class="w-[60px] h-[60px]" loading="lazy" style="box-shadow: 2px 4px 8px #d3d3d3; border-radius: 4px;" />
-      )}
-      <div class="flex flex-col justify-center">
-        <p class="font-semibold text-xl leading-6 font-serif">{role}</p>
-        {description && (
-          <p class="max-w-[600px]">{description}</p>
+<li class="timeline-item">
+  <div class="timeline-content">
+    <div class="timeline-header">
+      <div class="timeline-logo">
+        {logoSrc && (
+          <img src={logoSrc} alt={logoAlt} class="company-logo" loading="lazy" />
         )}
       </div>
+      <div class="timeline-info">
+        <h4 class="timeline-role">{role}</h4>
+        <p class="timeline-period">{period}</p>
+      </div>
     </div>
-    <p class="text-sm text-gray-500 whitespace-nowrap">{period}</p>
+    
+    {description && (
+      <p class="timeline-description">{description}</p>
+    )}
+    
+    {tags.length > 0 && (
+      <div class="timeline-tags">
+        {tags.map((t) => (
+          <span class="timeline-tag">{t}</span>
+        ))}
+      </div>
+    )}
   </div>
-  {tags.length > 0 && (
-    <div class="mt-2 flex flex-wrap gap-2 ml-21">
-      {tags.map((t) => (
-        <span class="inline-block rounded-full bg-gray-100 px-2 py-0.5 text-xs">{t}</span>
-      ))}
-    </div>
-  )}
   <slot />
 </li>
 

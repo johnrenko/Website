@@ -45,7 +45,7 @@ try {
 
 <!-- Lightbox overlay -->
 <div class="hidden fixed inset-0 z-50 bg-black/90 p-4 md:p-8 flex items-center justify-center" data-lightbox aria-hidden="true">
-  <button type="button" class="absolute top-4 right-4 md:top-6 md:right-6 text-white/90 hover:text-white text-xl" data-lightbox-close aria-label="Close">
+  <button type="button" class="absolute top-4 right-4 md:top-6 md:right-6 text-white/90 hover:text-white text-3xl md:text-4xl p-2 md:p-3" data-lightbox-close aria-label="Close">
     ×
   </button>
   <div class="max-w-[95vw] max-h-[95vh] w-full h-full flex items-center justify-center" data-lightbox-viewport>
@@ -125,7 +125,7 @@ try {
           closeLightbox();
           return;
         }
-        if (overlay && !target.closest('[data-lightbox-viewport]') && !target.closest('[data-media-src]') && !overlay.classList.contains('hidden')) {
+        if (overlay && !target.closest('[data-lightbox-media]') && !target.closest('[data-media-src]') && !overlay.classList.contains('hidden')) {
           closeLightbox();
         }
       });

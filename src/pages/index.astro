@@ -20,45 +20,141 @@ const experiments = await getCollection('experiments');
 <BaseLayout title="John Dutamby — Portfolio" >
   <HeroHeader name="JOHN DUTAMBY" />
 
-  <section id="work" class="mb-20">
-    <div class="flex items-end justify-between mb-6">
-      <h2 class="font-display text-3xl">Work</h2>
-      <a href="/work" class="text-sm underline">All work →</a>
-    </div>
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      {sortedWorks.slice(0,3).map((w) => (
-        <WorkCard
-          href={`/work/${w.id}`}
-          company={w.data.title.split(' — ')[0] ?? ''}
-          role={w.data.role}
-          title={w.data.summary}
-          cover={w.data.cover}
-          coverAlt={w.data.title}
-        />
-      ))}
+  <section id="work" class="mb-32">
+    <div class="text-center max-w-4xl mx-auto">
+      <h2 class="font-display text-3xl mb-6">Featured Work</h2>
+      <p class="text-zinc-600 mb-12 text-lg leading-relaxed">
+        A selection of projects showcasing design, strategy, and product development across diverse industries.
+      </p>
+      <div class="work-grid">
+        {sortedWorks.map((w) => (
+          <WorkCard
+            href={`/work/${w.id}`}
+            company={w.data.title.split(' — ')[0] ?? ''}
+            role={w.data.role}
+            title={w.data.summary}
+            cover={w.data.cover}
+            coverAlt={w.data.title}
+          />
+        ))}
+      </div>
     </div>
   </section>
 
-  <section id="experiments" class="mb-20">
-    <div class="flex items-end justify-between mb-6">
-      <h2 class="font-display text-3xl">Experiments</h2>
-      <a href="/experiments" class="text-sm underline">All experiments →</a>
+  <!-- Animated Separator -->
+  <div class="section-separator mb-32">
+    <div class="separator-line"></div>
+    <div class="separator-dot"></div>
+    <div class="separator-line"></div>
+  </div>
+
+  <section id="experiments" class="mb-32">
+    <div class="text-center max-w-4xl mx-auto">
+      <h2 class="font-display text-3xl mb-6">Creative Explorations</h2>
+      <p class="text-zinc-600 mb-12 text-lg leading-relaxed">
+        A collection of design experiments, prototypes, and creative projects exploring new ideas and techniques.
+      </p>
+      <ExperimentsGrid />
     </div>
-    <ExperimentsGrid limit={8} />
   </section>
 
-  <section id="cv" class="mb-24">
-    <h2 class="font-display text-3xl mb-4">Curriculum Vitae</h2>
-    <CVSummary />
+  <!-- Animated Separator -->
+  <div class="section-separator mb-32">
+    <div class="separator-line"></div>
+    <div class="separator-dot"></div>
+    <div class="separator-line"></div>
+  </div>
+
+  <section id="cv" class="mb-32">
+    <div class="text-center max-w-4xl mx-auto">
+      <h2 class="font-display text-3xl mb-6">Professional Journey</h2>
+      <p class="text-zinc-600 mb-12 text-lg leading-relaxed">
+        Over 15 years of experience shaping products and leading design teams across diverse industries.
+      </p>
+      <CVSummary />
+    </div>
   </section>
 
-  <section id="contact" class="mb-24">
-    <h2 class="font-display text-3xl mb-4">Contact</h2>
-    <ul class="space-y-2">
-      <li><a href="mailto:john.dutamby@..." class="underline">Email</a></li>
-      <li><a href="https://www.linkedin.com/in/johndutamby/" class="underline" rel="noopener" target="_blank">LinkedIn</a></li>
-    </ul>
+  <!-- Animated Separator -->
+  <div class="section-separator mb-32">
+    <div class="separator-line"></div>
+    <div class="separator-dot"></div>
+    <div class="separator-line"></div>
+  </div>
+
+  <section id="contact" class="mb-32">
+    <div class="text-center max-w-2xl mx-auto">
+      <h2 class="font-display text-3xl mb-6">Let's Connect</h2>
+      <p class="text-zinc-600 mb-8 text-lg leading-relaxed">
+        I'm always interested in new opportunities, collaborations, and conversations about design, product, and innovation.
+      </p>
+      
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
+        <button type="button" class="contact-card group" data-copy-email>
+          <div class="contact-icon">
+            <span class="contact-icon-default">✉</span>
+            <span class="contact-icon-hover">📋</span>
+          </div>
+          <div class="contact-content">
+            <h3 class="contact-title">Email</h3>
+            <p class="contact-subtitle">Click to copy to clipboard</p>
+          </div>
+        </button>
+        
+        <a href="https://www.linkedin.com/in/johndutamby/" class="contact-card group" rel="noopener" target="_blank">
+          <div class="contact-icon">💼</div>
+          <div class="contact-content">
+            <h3 class="contact-title">LinkedIn</h3>
+            <p class="contact-subtitle">Professional Network</p>
+          </div>
+        </a>
+      </div>
+      
+      <div class="text-sm text-zinc-500">
+        <p>Available for freelance projects and full-time opportunities</p>
+      </div>
+    </div>
   </section>
+
+  <!-- Copy to clipboard notification -->
+  <div id="copy-notification" class="copy-notification hidden">
+    <div class="copy-notification-content">
+      <span class="copy-notification-icon">✓</span>
+      <span class="copy-notification-text">Email copied to clipboard!</span>
+    </div>
+  </div>
+
+  <script>
+    // Copy email to clipboard functionality
+    (function() {
+      const emailButton = document.querySelector('[data-copy-email]');
+      const notification = document.getElementById('copy-notification');
+      const email = 'john.dutamby@gmail.com';
+      
+      if (!emailButton || !notification) return;
+      
+      async function copyEmailToClipboard() {
+        try {
+          await navigator.clipboard.writeText(email);
+          
+          // Show notification
+          notification.classList.remove('hidden');
+          
+          // Hide notification after 3 seconds
+          setTimeout(() => {
+            notification.classList.add('hidden');
+          }, 3000);
+          
+        } catch (err) {
+          console.error('Failed to copy email:', err);
+          // Fallback: show alert
+          alert(`Email: ${email}`);
+        }
+      }
+      
+      emailButton.addEventListener('click', copyEmailToClipboard);
+    })();
+  </script>
 </BaseLayout>
 
 

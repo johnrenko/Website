@@ -3,7 +3,7 @@ const { name = 'JOHN DUTAMBY' } = Astro.props as { name?: string };
 const tagline = 'Your next founding designer';
 const taglineChars = Array.from(tagline);
 ---
-<section class="mb-16" style="height: 70vh;">
+<section class="mb-16" style="height: 50vh;">
   <div class="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen overflow-visible">
     <h1
       id="hero-title"
@@ -17,7 +17,7 @@ const taglineChars = Array.from(tagline);
   <div class="flex items-center justify-center mt-6" style="height: 100%;">
     <h2
       class="font-serif text-center tagline"
-      style="font-family: 'Ovo', serif; font-size: 80px; line-height: 1;"
+      style="font-family: 'Ovo', serif; font-size: 80px; line-height: 1; cursor: url('/images/cursor/wand.svg') 6 6, auto;"
       aria-label={tagline}
     >
       {taglineChars.map((c, i) => (
@@ -49,7 +49,7 @@ const taglineChars = Array.from(tagline);
   .hero-title:hover { --r: 1400px; }
   .tagline-letter { transition: transform 120ms ease-in-out; }
   .tagline-letter:hover { transform: translateY(-2px); }
-  .tagline { white-space: nowrap; cursor: url('/images/cursor/wand.svg') 6 6, auto; }
+  .tagline { white-space: nowrap; }
 </style>
 
 <script>

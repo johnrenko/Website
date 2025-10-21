@@ -1,6 +1,7 @@
 ---
 import "../styles/global.css";
 const { title = 'John Dutamby — Portfolio', description = 'Product Designer & PM' } = Astro.props as { title?: string; description?: string };
+const isWorkPage = Astro.url.pathname.startsWith('/work/');
 ---
 <!DOCTYPE html>
 <html lang="fr">
@@ -23,6 +24,21 @@ const { title = 'John Dutamby — Portfolio', description = 'Product Designer & 
         <button class="wip-banner__close" type="button" aria-label="Dismiss work in progress banner" data-wip-close>Close</button>
       </div>
     </div>
+    <!-- Scroll Header -->
+    {!isWorkPage && (
+      <header class="scroll-header fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm border-b border-zinc-200 px-6 py-4 hidden" data-scroll-header>
+        <div class="mx-auto max-w-8xl flex items-center justify-between">
+          <div class="font-display text-lg">JOHN DUTAMBY</div>
+        <nav class="flex items-center space-x-6">
+          <a href="#work" class="nav-link text-sm underline hover:no-underline" data-section="work">Work</a>
+          <a href="#experiments" class="nav-link text-sm underline hover:no-underline" data-section="experiments">Experiments</a>
+          <a href="#cv" class="nav-link text-sm underline hover:no-underline" data-section="cv">CV</a>
+          <a href="#contact" class="nav-link text-sm underline hover:no-underline" data-section="contact">Contact</a>
+        </nav>
+        </div>
+      </header>
+    )}
+
     <main class="mx-auto max-w-8xl px-6 py-10 overflow-hidden">
       <slot />
     </main>
@@ -52,6 +68,88 @@ const { title = 'John Dutamby — Portfolio', description = 'Product Designer & 
             c.parentNode && c.parentNode.removeChild(c);
           });
         }
+      })();
+    </script>
+    <script>
+      // Save and restore scroll position per path within the same tab
+      (function() {
+        try {
+          var key = 'scroll:' + location.pathname;
+          var saved = sessionStorage.getItem(key);
+          if (saved) {
+            var y = parseInt(saved, 10);
+            if (!isNaN(y)) {
+              // Use requestAnimationFrame to ensure layout is ready
+              requestAnimationFrame(function() { window.scrollTo(0, y); });
+            }
+            sessionStorage.removeItem(key);
+          }
+          // pagehide works with BFCache; fallback to beforeunload
+          var handler = function() {
+            try {
+              sessionStorage.setItem(key, String(window.scrollY || window.pageYOffset || 0));
+            } catch (e) {}
+          };
+          window.addEventListener('pagehide', handler, { capture: true });
+          window.addEventListener('beforeunload', handler, { capture: true });
+        } catch (e) {}
+      })();
+    </script>
+    <script>
+      // Scroll header visibility
+      (function() {
+        const header = document.querySelector('[data-scroll-header]');
+        if (!header) return;
+        
+        let lastScrollY = window.scrollY;
+        let ticking = false;
+        
+        function updateHeader() {
+          const scrollY = window.scrollY;
+          
+          if (scrollY > 100) {
+            header.classList.remove('hidden');
+          } else {
+            header.classList.add('hidden');
+          }
+          
+          lastScrollY = scrollY;
+          ticking = false;
+        }
+        
+        function requestTick() {
+          if (!ticking) {
+            requestAnimationFrame(updateHeader);
+            ticking = true;
+          }
+        }
+        
+        window.addEventListener('scroll', requestTick, { passive: true });
+      })();
+    </script>
+    <script>
+      // Smooth scroll navigation
+      (function() {
+        const navLinks = document.querySelectorAll('.nav-link');
+        
+        navLinks.forEach(link => {
+          link.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            const targetId = this.getAttribute('data-section');
+            const targetElement = document.getElementById(targetId);
+            
+            if (targetElement) {
+              const headerHeight = 80; // Account for fixed header height
+              const targetPosition = targetElement.offsetTop - headerHeight;
+              
+              window.scrollTo({
+                top: targetPosition,
+                behavior: 'smooth'
+              });
+            }
+          });
+        });
       })();
     </script>
   </body>
