@@ -1,10 +1,15 @@
 ---
 import "../styles/global.css";
+import { getAbsoluteLocaleUrlList } from 'astro:i18n';
+import LanguageSwitcher from '../components/LanguageSwitcher.astro';
+
 const { title = 'John Dutamby — Portfolio', description = 'Product Designer & PM' } = Astro.props as { title?: string; description?: string };
-const isWorkPage = Astro.url.pathname.startsWith('/work/');
+const isWorkPage = /\/(fr|en)\/work\//.test(Astro.url.pathname) || Astro.url.pathname.startsWith('/work/');
+const current = Astro.currentLocale || 'fr';
+const alternates = getAbsoluteLocaleUrlList(Astro.url.pathname);
 ---
 <!DOCTYPE html>
-<html lang="fr">
+<html lang={current}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -15,12 +20,16 @@ const isWorkPage = Astro.url.pathname.startsWith('/work/');
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400&family=Roboto:wght@400&family=Playfair+Display:wght@400&family=Lora:wght@400&family=Poppins:wght@400&family=Space+Mono:wght@400&family=Ovo&display=swap" rel="stylesheet" />
+    {alternates.map(({ locale, url }) => (
+      <link rel="alternate" hrefLang={locale} href={url} />
+    ))}
+    <link rel="alternate" hrefLang="x-default" href={alternates.find(a=>a.locale===current)?.url || '/fr/'} />
     <title>{title}</title>
   </head>
   <body class="min-h-screen">
     <!-- Scroll Header -->
     {!isWorkPage && (
-      <header class="scroll-header fixed top-0 left-0 right-0 z-50 bg-white border-b border-zinc-200 shadow-sm px-6 py-4 hidden" data-scroll-header>
+      <header class="scroll-header fixed top-0 left-0 right-0 z-40 bg-white border-b border-zinc-200 shadow-sm px-6 py-4 hidden" data-scroll-header>
         <div class="mx-auto max-w-8xl flex items-center justify-between">
           <div class="font-display text-lg">JOHN DUTAMBY</div>
         <nav class="flex items-center space-x-6">
@@ -36,6 +45,7 @@ const isWorkPage = Astro.url.pathname.startsWith('/work/');
     <main class="mx-auto max-w-8xl px-6 py-10">
       <slot />
     </main>
+    <LanguageSwitcher />
     <script>
       // Save and restore scroll position per path within the same tab
       (function() {

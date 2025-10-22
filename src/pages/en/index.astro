@@ -1,0 +1,167 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import HeroHeader from "../../components/HeroHeader.astro";
+import ExperimentsGrid from "../../components/ExperimentsGrid.astro";
+import { getCollection } from 'astro:content';
+import CVSummary from "../../components/CVSummary.astro";
+import WorkCard from "../../components/WorkCard.astro";
+import { getRelativeLocaleUrl } from 'astro:i18n';
+
+const works = await getCollection('work');
+const sortedWorks = works
+  .filter((w) => w.id.endsWith('-en.mdx'))
+  .slice()
+  .sort((a, b) => {
+    const orderA = typeof a.data.order === 'number' ? a.data.order : Number.POSITIVE_INFINITY;
+    const orderB = typeof b.data.order === 'number' ? b.data.order : Number.POSITIVE_INFINITY;
+    if (orderA !== orderB) return orderA - orderB; // lower order first
+    // Fallback: most recent date first (date is YYYY-MM)
+    return (b.data.date || '').localeCompare(a.data.date || '');
+  });
+// Removed unused experiments collection fetch to avoid build error when empty
+---
+<BaseLayout title="John Dutamby — Portfolio" >
+  <HeroHeader name="JOHN DUTAMBY" />
+
+  <section id="work" class="mb-32">
+    <div class="text-center max-w-4xl mx-auto">
+      <h2 class="font-display text-3xl mb-6">Featured Projects</h2>
+      <p class="text-zinc-600 mb-12 text-lg leading-relaxed">
+        A selection of my work showcasing my design thinking across various industries.
+      </p>
+      <div class="work-grid">
+        {sortedWorks.map((w) => (
+          <WorkCard
+            href={getRelativeLocaleUrl('en', `work/${w.id}`)}
+            company={w.data.title.split(' — ')[0] ?? ''}
+            role={w.data.role}
+            title={w.data.summary}
+            cover={w.data.cover}
+            coverAlt={w.data.title}
+          />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Animated Separator -->
+  <div class="section-separator mb-32">
+    <div class="separator-line"></div>
+    <div class="separator-dot"></div>
+    <div class="separator-line"></div>
+  </div>
+
+  <section id="experiments" class="mb-32">
+    <div class="text-center max-w-4xl mx-auto">
+      <h2 class="font-display text-3xl mb-6">Creative Explorations</h2>
+      <p class="text-zinc-600 mb-12 text-lg leading-relaxed">
+        A collection of experiments, photos, mockups, prototypes, genAI...
+      </p>
+      <ExperimentsGrid />
+    </div>
+  </section>
+
+  <!-- Animated Separator -->
+  <div class="section-separator mb-32">
+    <div class="separator-line"></div>
+    <div class="separator-dot"></div>
+    <div class="separator-line"></div>
+  </div>
+
+  <section id="cv" class="mb-32">
+    <div class="text-center max-w-4xl mx-auto">
+      <h2 class="font-display text-3xl mb-6">Professional Journey</h2>
+      <p class="text-zinc-600 mb-12 text-lg leading-relaxed">
+        Trained as an engineer, I started in user research before mastering the entire design process, from discovery to delivery. With over 15 years of experience, I've worked internationally and combined design, development, and product strategy across various fields: accounting software, retail, e-commerce, healthcare... My obsession: making complexity intuitive.
+      </p>
+      <CVSummary />
+    </div>
+  </section>
+
+  <!-- Animated Separator -->
+  <div class="section-separator mb-32">
+    <div class="separator-line"></div>
+    <div class="separator-dot"></div>
+    <div class="separator-line"></div>
+  </div>
+
+  <section id="contact" class="mb-32">
+    <div class="text-center max-w-2xl mx-auto">
+      <h2 class="font-display text-3xl mb-6">Let's get in touch!</h2>
+      <p class="text-zinc-600 mb-8 text-lg leading-relaxed">
+        I'm always open to new collaborations, freelance projects or full-time opportunities, as well as any discussion around design, product and innovation.
+      </p>
+      
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
+        <button type="button" class="contact-card group" data-copy-email>
+          <div class="contact-icon">
+            <span class="contact-icon-default">✉</span>
+            <span class="contact-icon-hover">📋</span>
+          </div>
+          <div class="contact-content">
+            <h3 class="contact-title">Email</h3>
+            <p class="contact-subtitle">Click to copy my email</p>
+          </div>
+        </button>
+        
+        <a href="https://www.linkedin.com/in/johndutamby/" class="contact-card group" rel="noopener" target="_blank">
+          <div class="contact-icon">💼</div>
+          <div class="contact-content">
+            <h3 class="contact-title">LinkedIn</h3>
+            <p class="contact-subtitle">Add me to your network</p>
+          </div>
+        </a>
+      </div>
+      
+      <div class="flex justify-center">
+        <span class="inline-flex items-center gap-2 rounded-full border border-green-200 bg-green-50 px-2.5 py-1 text-xs font-medium text-green-700">
+          <span class="h-2 w-2 rounded-full bg-green-500"></span>
+          Available
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Copy to clipboard notification -->
+  <div id="copy-notification" class="copy-notification hidden">
+    <div class="copy-notification-content">
+      <span class="copy-notification-icon">✓</span>
+      <span class="copy-notification-text">Email copied</span>
+    </div>
+  </div>
+
+  <script>
+    // Copy email to clipboard functionality
+    (function() {
+      const emailButton = document.querySelector('[data-copy-email]');
+      const notification = document.getElementById('copy-notification');
+      const email = 'john.dutamby@gmail.com';
+      
+      if (!emailButton || !notification) return;
+      
+      async function copyEmailToClipboard() {
+        try {
+          await navigator.clipboard.writeText(email);
+          
+          // Show notification
+          notification.classList.remove('hidden');
+          
+          // Hide notification after 3 seconds
+          setTimeout(() => {
+            notification.classList.add('hidden');
+          }, 3000);
+          
+        } catch (err) {
+          console.error('Failed to copy email:', err);
+          // Fallback: show alert
+          alert(`Email: ${email}`);
+        }
+      }
+      
+      emailButton.addEventListener('click', copyEmailToClipboard);
+    })();
+  </script>
+</BaseLayout>
+
+
+

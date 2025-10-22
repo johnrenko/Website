@@ -1,0 +1,75 @@
+---
+import { getRelativeLocaleUrlList } from 'astro:i18n';
+const current = Astro.currentLocale || 'fr';
+const other = current === 'fr' ? 'en' : 'fr';
+const list = getRelativeLocaleUrlList(Astro.url.pathname);
+const target = list.find((e) => e.locale === other)?.url || `/${other}/`;
+const flag = current === 'fr' ? '🇫🇷' : '🇬🇧';
+---
+<a href={target} class="lang-fab" data-target-locale={other} aria-label={`Switch to ${other.toUpperCase()}`} lang={current}>
+  <span class="lang-flag" aria-hidden="true">{flag}</span>
+</a>
+<style>
+  .lang-fab {
+    position: fixed;
+    left: 1rem;
+    bottom: 1rem;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(229, 231, 235, 0.6);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    z-index: 60;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+  }
+  .lang-fab:hover { 
+    transform: translateY(-1px); 
+    box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+    background: rgba(255, 255, 255, 0.95);
+  }
+  .lang-flag { 
+    font-size: 20px; 
+    line-height: 1; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+</style>
+<script>
+  // Save scroll position before leaving the page
+  document.addEventListener('click', (e) => {
+    const a = e.target.closest('a.lang-fab');
+    if (!a) return;
+    try { 
+      localStorage.setItem('lang', a.getAttribute('data-target-locale') || '');
+      // Save scroll position with a unique key based on pathname
+      const key = 'scroll:' + location.pathname;
+      sessionStorage.setItem(key, String(window.scrollY || window.pageYOffset || 0));
+    } catch {}
+  });
+  
+  // Restore scroll position after page load
+  (function() {
+    try {
+      const key = 'scroll:' + location.pathname;
+      const saved = sessionStorage.getItem(key);
+      if (saved) {
+        const y = parseInt(saved, 10);
+        if (!isNaN(y)) {
+          // Wait for content to load
+          setTimeout(() => {
+            window.scrollTo(0, y);
+            sessionStorage.removeItem(key);
+          }, 0);
+        }
+      }
+    } catch (e) {}
+  })();
+</script>
+
