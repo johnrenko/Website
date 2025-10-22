@@ -1,6 +1,7 @@
 ---
 const { name = 'JOHN DUTAMBY' } = Astro.props as { name?: string };
-const tagline = 'Votre prochain founding designer';
+const locale = Astro.currentLocale || 'fr';
+const tagline = locale === 'fr' ? 'Votre prochain founding designer' : 'Your next founding designer';
 const taglineWords = tagline.split(' ');
 ---
 <section class="mb-16" style="height: 50vh;">

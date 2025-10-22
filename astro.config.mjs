@@ -13,6 +13,15 @@ export default defineConfig({
   integrations: [mdx()],
   vite: {
     plugins: [tailwind()]
+  },
+  i18n: {
+    locales: ['fr', 'en'],
+    defaultLocale: 'en',
+    routing: {
+      prefixDefaultLocale: true,
+      redirectToDefaultLocale: false,
+      fallbackType: 'rewrite'
+    }
   }
 });
 

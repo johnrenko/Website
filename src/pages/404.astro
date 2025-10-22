@@ -1,0 +1,12 @@
+---
+---
+<noscript><meta http-equiv="refresh" content="0;url=/fr/" /></noscript>
+<script>
+(function(){
+  var saved=localStorage.getItem('lang');
+  var lang=saved||((navigator.languages||[navigator.language||''])[0]||'fr').toLowerCase().split('-')[0];
+  if(['fr','en'].includes(lang)) location.replace('/'+lang+'/');
+  else location.replace('/fr/');
+})();
+</script>
+

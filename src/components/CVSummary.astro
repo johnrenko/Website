@@ -2,7 +2,8 @@
 import CVExperienceItem from './CVExperienceItem.astro';
 import { getCollection } from 'astro:content';
 
-const experiences = await getCollection('experiences');
+const lang = Astro.currentLocale || 'fr';
+const experiences = await getCollection('experiences', (e) => e.id.endsWith(`-${lang}.mdx`));
 // sort by optional `order`, lower first, then fallback to created order
 const sorted = experiences
   .slice()
@@ -16,26 +17,26 @@ const sorted = experiences
 <div class="cv-container">
   <div class="cv-intro">
     <div class="cv-skills">
-      <h3 class="cv-section-title">Core Expertise</h3>
+      <h3 class="cv-section-title">{lang === 'fr' ? 'Compétences clés' : 'Core Expertise'}</h3>
       <div class="skills-grid">
         <div class="skill-category">
-          <h4 class="skill-title">Design</h4>
-          <p class="skill-description">Recherche utilisateur, prototypage, design system, stratégie</p>
+          <h4 class="skill-title">{lang === 'fr' ? 'Design' : 'Design'}</h4>
+          <p class="skill-description">{lang === 'fr' ? 'Recherche utilisateur, prototypage, design system, stratégie' : 'User research, prototyping, design systems, strategy'}</p>
         </div>
         <div class="skill-category">
-          <h4 class="skill-title">Produit</h4>
-          <p class="skill-description">Roadmaps, validation du product-market fit, entretiens utilisateurs</p>
+          <h4 class="skill-title">{lang === 'fr' ? 'Produit' : 'Product'}</h4>
+          <p class="skill-description">{lang === 'fr' ? 'Roadmaps, validation du product-market fit, entretiens utilisateurs' : 'Roadmaps, PMF validation, user interviews'}</p>
         </div>
         <div class="skill-category">
-          <h4 class="skill-title">Leadership</h4>
-          <p class="skill-description">Management d’équipe, vision design, direction stratégique</p>
+          <h4 class="skill-title">{lang === 'fr' ? 'Leadership' : 'Leadership'}</h4>
+          <p class="skill-description">{lang === 'fr' ? "Management d’équipe, vision design, direction stratégique" : 'Team management, design vision, strategic direction'}</p>
         </div>
       </div>
     </div>
   </div>
 
   <div class="cv-experiences">
-    <h3 class="cv-section-title">Expériences clés</h3>
+    <h3 class="cv-section-title">{lang === 'fr' ? 'Expériences clés' : 'Key Experiences'}</h3>
     <div class="timeline">
       {sorted.map(({ data }) => (
         <CVExperienceItem

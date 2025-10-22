@@ -6,4 +6,4 @@ node_modules
 .astro/cache.json.gz
 .astro/cache.json.gz.br
 .DS_Store
-.dist
+dist
