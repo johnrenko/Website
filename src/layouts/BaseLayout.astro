@@ -1,7 +1,6 @@
 ---
 import "../styles/global.css";
 import { getAbsoluteLocaleUrlList } from 'astro:i18n';
-import LanguageSwitcher from '../components/LanguageSwitcher.astro';
 
 const { title = 'John Dutamby — Portfolio', description = 'Product Designer & PM' } = Astro.props as { title?: string; description?: string };
 const isWorkPage = /\/(fr|en)\/work\//.test(Astro.url.pathname) || Astro.url.pathname.startsWith('/work/');
@@ -45,7 +44,6 @@ const alternates = getAbsoluteLocaleUrlList(Astro.url.pathname);
     <main class="mx-auto max-w-8xl px-6 py-10">
       <slot />
     </main>
-    <LanguageSwitcher />
     <script>
       // Save and restore scroll position per path within the same tab
       (function() {
